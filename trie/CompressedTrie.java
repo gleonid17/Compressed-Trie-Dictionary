@@ -97,7 +97,7 @@ public class CompressedTrie {
         // Run searches
         for (String word : tests) {
             boolean found = trie.search(word);
-            System.out.println("search(\"" + word + "\") → " + found);
+            System.out.println("search(\"" + word + "\")\t->\t" + found);
         }
     }
 }
