@@ -1,2 +1,2 @@
 # Compressed-Trie-Dictionary
-Bonjour
+Bonjour 🥐
