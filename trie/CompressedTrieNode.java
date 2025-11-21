@@ -1,7 +1,7 @@
 package trie;
 
 public class CompressedTrieNode {
-	private SinglyLinkedList edgeList;
+	private RobinHoodHashtable hashtable;
 	public boolean isEndOfWord;
 	
 	public CompressedTrieNode() {
@@ -15,5 +15,9 @@ public class CompressedTrieNode {
 	
 	public Edge getEdgeByFirstChar(char c) {
 		return this.edgeList.getEdge(c);
+	}
+	
+	public SinglyLinkedList getAllEdges() {
+		return this.hashtable.getAllEdges();
 	}
 }
