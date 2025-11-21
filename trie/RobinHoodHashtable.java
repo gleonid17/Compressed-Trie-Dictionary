@@ -136,6 +136,17 @@ public class RobinHoodHashtable {
         return sb.toString();
     }
 
+    public SinglyLinkedList getAllEdges(){
+        SinglyLinkedList list = new SinglyLinkedList();
+
+        for(int i=0; i<capacity; i++){
+            if(occupied[i] == true && table[i] != null)
+                list.insert(table[i]);
+        }
+
+        return list;
+    }
+
     public static void main(String[] args) {
         System.out.println("=== ROBIN HOOD HASHING TEST (Single Characters) ===\n");
 

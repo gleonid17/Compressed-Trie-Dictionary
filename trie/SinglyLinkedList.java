@@ -1,7 +1,7 @@
 package trie;
 
 public class SinglyLinkedList {
-	private static class Node {
+	static class Node {
 		Edge edge; 
 		Node next;
 		

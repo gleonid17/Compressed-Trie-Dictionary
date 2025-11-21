@@ -14,12 +14,24 @@ public class MinHeap{
     private int maxSize;
     private int currentlyStored;
 
+    public MinHeap(int maxSize){
+
+    }
+
+    public boolean isFull(){
+        // Croissant (insert croissant emoji here)
+        return false;
+    }
+
     public void insert(String contents, int importance){
         // Croissant 🥐
     }
 
-    public heapNode deleteMin(){
+    public void deleteMin(){
         // Croissant 🥐
+    }
+
+    public heapNode getTop(){
         return null;
     }
 
