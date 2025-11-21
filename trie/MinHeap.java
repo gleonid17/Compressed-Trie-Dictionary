@@ -1,16 +1,16 @@
 package trie;
 
 public class MinHeap{
-    public class heapNode{
+    public class HeapNode{
         public String contents;
         public int importance;
 
-        public heapNode(String contents, int importance){
+        public HeapNode(String contents, int importance){
             this.contents = contents;
             this.importance = importance;
         }
     }
-    private heapNode[] contents;
+    private HeapNode[] contents;
     private int maxSize;
     private int currentlyStored;
 
@@ -31,7 +31,7 @@ public class MinHeap{
         // Croissant 🥐
     }
 
-    public heapNode getTop(){
+    public HeapNode getTop(){
         return null;
     }
 
