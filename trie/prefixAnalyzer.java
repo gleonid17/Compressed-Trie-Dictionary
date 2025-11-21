@@ -13,7 +13,7 @@ public class PrefixAnalyzer {
         }
     }
 
-    public prefixAnalyzer(CompressedTrie dictionary) {
+    public PrefixAnalyzer(CompressedTrie dictionary) {
         this.dictionary = dictionary;
     }
 
