@@ -3,9 +3,11 @@ package trie;
 public class Edge {
 	public String label;
 	public CompressedTrieNode child;
+	public boolean occupied;
 	
 	public Edge (String label, CompressedTrieNode child) {
 		this.label = label;
 		this.child = child;
+		this.occupied = false;
 	}
 }
