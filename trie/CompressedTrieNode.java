@@ -5,19 +5,21 @@ public class CompressedTrieNode {
 	public boolean isEndOfWord;
 	
 	public CompressedTrieNode() {
-		this.edgeList = new SinglyLinkedList();
+		this.hashtable = new RobinHoodHashtable();
 		this.isEndOfWord = false;
 	}
 	
 	public void insertEdge(Edge edge) {
-		this.edgeList.insert(edge);
+		this.hashtable.insert(edge);
 	}
 	
 	public Edge getEdgeByFirstChar(char c) {
-		return this.edgeList.getEdge(c);
+		return this.hashtable.search(c);
 	}
 	
 	public SinglyLinkedList getAllEdges() {
 		return this.hashtable.getAllEdges();
 	}
 }
+
+//Just replased "edgelist" with "hashtable" and "getEdgeByFirstChar" with "search"
