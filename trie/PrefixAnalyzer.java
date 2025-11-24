@@ -171,10 +171,10 @@ public class PrefixAnalyzer {
     //     return count;
     // }
 
-    public char predictNextLetter(String prefix) {
+    public char predictNextLetter(String prefix) throws Exception {
         PrefixResult searchResult = findPrefixNode(prefix);
         if (searchResult == null)
-            return ' ';
+            throw new Exception("Cannot predict next letter!");
 
         // If all words with this prefix share the next letter return it
         if (searchResult.suffix.length() > 0)
@@ -183,10 +183,10 @@ public class PrefixAnalyzer {
         // get average frequency of all subtrees
         SinglyLinkedList.Node current = searchResult.node.getAllEdges().head;
         if (current == null) // if node is leaf node
-            return ' ';
+            throw new Exception("No words start with given prefix!");
 
         float frequency, maxFrequency = Float.NEGATIVE_INFINITY;
-        char mostFrequentChar = ' ';
+        char mostFrequentChar = '\0';
 
         while (current != null) {
             frequency = getAverageFrequencyOfPrefix(prefix + current.edge.getLabel().charAt(0));
@@ -197,6 +197,9 @@ public class PrefixAnalyzer {
             current = current.next;
         }
 
+        if(mostFrequentChar == '\0')
+            throw new Exception("Cannot predict next letter!");
+        
         return mostFrequentChar;
     }
 }

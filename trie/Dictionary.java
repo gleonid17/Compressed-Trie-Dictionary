@@ -4,10 +4,10 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Dictionary {
-    private CompressedTrie Dictionary;
+    private CompressedTrie dictionary;
 
     public Dictionary() {
-        this.Dictionary = new CompressedTrie();
+        this.dictionary = new CompressedTrie();
     }  
 
     // The word doesn't need to be trimmed, just lowercased right?
@@ -20,7 +20,7 @@ public class Dictionary {
                     character = character - 'A' + 'a';
                 }
                 if (character == '\n' || character == ' ' || character == '\r' || character == '\t') {
-                    this.Dictionary.insert(word.toString());
+                    this.dictionary.insert(word.toString());
                     word.setLength(0);
                 }
                 else {
@@ -28,7 +28,8 @@ public class Dictionary {
                 }
             }
         }catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
+            System.exit(1);
         }
     }
 
@@ -41,7 +42,8 @@ public class Dictionary {
                     character = character - 'A' + 'a';
                 }
                 if (character == '\n' || character == ' ' || character == '\r' || character == '\t') {
-                    // Only word trim, validation check, search and update importance left but feeling sleepy (insert croissant emoji here)
+                    int letters = 0;
+
                     word.setLength(0);
                 }
                 else {
@@ -49,7 +51,12 @@ public class Dictionary {
                 }
             }
         }catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
+            System.exit(1);
         }
+    }
+
+    public CompressedTrie getTrie(){
+        return dictionary;
     }
 }
