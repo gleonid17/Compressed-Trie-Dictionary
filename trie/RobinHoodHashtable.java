@@ -33,7 +33,7 @@ public class RobinHoodHashtable {
         if ((size + 1) / (float) capacity >= 0.9)
             rehash();
 
-        int index = hash(edge.label.charAt(0));
+        int index = hash(edge.getLabel().charAt(0));
         insertHelper(edge, index, 0);
         size++;
     }
@@ -50,7 +50,7 @@ public class RobinHoodHashtable {
         }
 
         // Check whether to swap elements
-        int key = hash(table[index].label.charAt(0));
+        int key = hash(table[index].getLabel().charAt(0));
         int existingProbeLength = index - key;
 
         if (existingProbeLength < 0)
@@ -82,7 +82,7 @@ public class RobinHoodHashtable {
             if(occupied[index] == false)
                 return null;
 
-            else if (table[index].label.charAt(0) == firstChar)
+            else if (table[index].getLabel().charAt(0) == firstChar)
                 return table[index];
         }
 
@@ -130,7 +130,7 @@ public class RobinHoodHashtable {
             if (occupied[i] == false)
                 sb.append("_ ");
             else
-                sb.append(table[i].label + ' ');
+                sb.append(table[i].getLabel() + ' ');
         }
 
         return sb.toString();
@@ -180,7 +180,7 @@ public class RobinHoodHashtable {
             char c = s.charAt(0);
             Edge e = ht.search(c);
             System.out.println("Search '" + c + "' → " +
-                    (e != null ? e.label : "NOT FOUND"));
+                    (e != null ? e.getLabel() : "NOT FOUND"));
         }
 
         System.out.println("\n=== INSERT MORE LETTERS (triggers rehash) ===");
@@ -204,7 +204,7 @@ public class RobinHoodHashtable {
             char c = s.charAt(0);
             Edge e = ht.search(c);
             System.out.println("Search '" + c + "' → " +
-                    (e != null ? e.label : "NOT FOUND"));
+                    (e != null ? e.getLabel() : "NOT FOUND"));
         }
     }
 

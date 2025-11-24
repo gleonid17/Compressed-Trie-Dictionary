@@ -44,32 +44,32 @@ public class PrefixAnalyzer {
             return null;
 
         // Case 1: Prefix is shorter or equal to edge label
-        if (prefix.length() <= edge.label.length()) {
+        if (prefix.length() <= edge.getLabel().length()) {
             // Check if prefix is the same as the first letters of label
             boolean samePrefix = true;
             for (int i = 0; i < prefix.length(); i++) {
-                if (prefix.charAt(i) != edge.label.charAt(i)) {
+                if (prefix.charAt(i) != edge.getLabel().charAt(i)) {
                     samePrefix = false;
                     break;
                 }
             }
 
             if (samePrefix) {
-                return new PrefixResult(edge.child, edge.label.substring(prefix.length()));
+                return new PrefixResult(edge.getChild(), edge.getLabel().substring(prefix.length()));
             } else
                 return null;
         } else { // Case 2: prefix is longer
             boolean samePrefix = true;
-            for (int i = 0; i < edge.label.length(); i++) {
-                if (prefix.charAt(i) != edge.label.charAt(i)) {
+            for (int i = 0; i < edge.getLabel().length(); i++) {
+                if (prefix.charAt(i) != edge.getLabel().charAt(i)) {
                     samePrefix = false;
                     break;
                 }
             }
 
             if (samePrefix) {
-                String remainingPrefix = prefix.substring(edge.label.length());
-                return findPrefixNodeHelper(edge.child, remainingPrefix);
+                String remainingPrefix = prefix.substring(edge.getLabel().length());
+                return findPrefixNodeHelper(edge.getChild(), remainingPrefix);
             } else
                 return null;
         }
@@ -82,19 +82,19 @@ public class PrefixAnalyzer {
         }
 
         // If node contains a word decide whether or not to add it in the heap
-        if (node.isEndOfWord) {
+        if (node.isEndOfWord()) {
             if (!heap.isFull())
-                heap.insert(word, node.importance);
-            else if (heap.isFull() && node.importance > heap.getTop().importance) {
+                heap.insert(word, node.getImportance());
+            else if (node.getImportance() > heap.getTop().importance || node.getImportance() == heap.getTop().importance && word.compareTo(heap.getTop().contents) < 0) {
                 heap.deleteMin();
-                heap.insert(word, node.importance);
+                heap.insert(word, node.getImportance());
             }
         }
 
         // Recursively call for all child nodes
         SinglyLinkedList.Node current = node.getAllEdges().head;
         while (current != null) {
-            fillHeap(heap, current.edge.child, word + current.edge.label);
+            fillHeap(heap, current.edge.getChild(), word + current.edge.getLabel());
             current = current.next;
         }
     }
@@ -119,14 +119,14 @@ public class PrefixAnalyzer {
             return new int[] { 0, 0 };
 
         int sum = 0, count = 0;
-        if (node.isEndOfWord) {
-            sum = node.importance;
+        if (node.isEndOfWord()) {
+            sum = node.getImportance();
             count = 1;
         }
 
         SinglyLinkedList.Node current = node.getAllEdges().head;
         while (current != null) {
-            int[] result = getSumAndCount(current.edge.child);
+            int[] result = getSumAndCount(current.edge.getChild());
             sum += result[0];
             count += result[1];
             current = current.next;
@@ -189,10 +189,10 @@ public class PrefixAnalyzer {
         char mostFrequentChar = ' ';
 
         while (current != null) {
-            frequency = getAverageFrequencyOfPrefix(prefix + current.edge.label.charAt(0));
+            frequency = getAverageFrequencyOfPrefix(prefix + current.edge.getLabel().charAt(0));
             if (frequency > maxFrequency) {
                 maxFrequency = frequency;
-                mostFrequentChar = current.edge.label.charAt(0);
+                mostFrequentChar = current.edge.getLabel().charAt(0);
             }
             current = current.next;
         }

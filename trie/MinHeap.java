@@ -13,7 +13,6 @@ public class MinHeap{
     private HeapNode[] contents;
     private int maxSize;
     private int currentlyStored;
-    private int previousMinNode;
 
     public MinHeap(int maxSize){
         this.maxSize = maxSize;
@@ -33,24 +32,23 @@ public class MinHeap{
         percolateUp(this.currentlyStored);
     }
 
-    /*
+    
     public void insert(HeapNode node){
         if (isFull()) 
             return; // Return or throw exception
         this.contents[++this.currentlyStored] = node;
         percolateUp(this.currentlyStored);
     }
-    */
+    
 
     private boolean isEmpty(){
         return this.currentlyStored == 0;
     }   
 
-    public HeapNode deleteMin(){
+    public void deleteMin(){
         if (isEmpty()) {
-            return null;
+            return;
         }
-        HeapNode min = this.contents[1]; //root node
         HeapNode last = contents[currentlyStored]; //last node
         currentlyStored--;
         int x = 1;
@@ -68,14 +66,7 @@ public class MinHeap{
             }
         }
         contents[x] = last;
-        return min; // Return type HeapNode?
     }
-
-    /*
-        public HeapNode getPreviousMinNode(){
-            return this.previousMinNode;
-        }
-    */
 
     public HeapNode getTop(){
         return this.contents[1];
@@ -121,8 +112,10 @@ public class MinHeap{
             tempContents[i] = this.contents[i];
         int tempSize = this.currentlyStored;
         String[] sortedArray = new String[tempSize];
-        for (int i = 0; i < tempSize; i++)
-            sortedArray[i] = deleteMin().contents;
+        for (int i = 0; i < tempSize; i++){
+            sortedArray[i] = getTop().contents;
+            deleteMin();
+        }
         this.contents = tempContents;
         this.currentlyStored = tempSize;
         return sortedArray;

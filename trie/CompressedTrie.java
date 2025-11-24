@@ -17,37 +17,37 @@ public class CompressedTrie {
 	private void insertHelper(CompressedTrieNode node, String word) {
 		// If word is
 		if (word.length() == 0) {
-			node.isEndOfWord = true;
+			node.setIsEndOfWord(true);
 			return;
 		}
 		Edge common = node.getEdgeByFirstChar(word.charAt(0));
 		// If there's not an edge with word.charAt[0]
 		if (common == null) {
 			CompressedTrieNode newNode = new CompressedTrieNode();
-			newNode.isEndOfWord = true;
+			newNode.setIsEndOfWord(true);
 			node.insertEdge(new Edge(word, newNode));
 			return;
 		}
 		// Find prefix
 		int i = 0;
 		String prefix;
-		while (i < word.length() && i < common.label.length() && word.charAt(i) == common.label.charAt(i)) {
+		while (i < word.length() && i < common.getLabel().length() && word.charAt(i) == common.getLabel().charAt(i)) {
 			i++;
 		}
 		prefix = word.substring(0, i);
-		String edgeRest = common.label.substring(i);
+		String edgeRest = common.getLabel().substring(i);
 		String wordRest = word.substring(i);
 		if (edgeRest.length() == 0) {
-			insertHelper(common.child, wordRest);
+			insertHelper(common.getChild(), wordRest);
 			return;
 		}
 		CompressedTrieNode splitNode = new CompressedTrieNode();
-		splitNode.insertEdge(new Edge(edgeRest, common.child));
-		common.child = splitNode;
-		common.label = prefix;
+		splitNode.insertEdge(new Edge(edgeRest, common.getChild()));
+		common.setChild(splitNode);
+		common.setLabel(prefix);
 		//insertHelper(splitNode, wordRest);
         if (wordRest.length() == 0)
-            splitNode.isEndOfWord = true;            // The split node represents a complete word
+            splitNode.setIsEndOfWord(true);          // The split node represents a complete word
         else
             insertHelper(splitNode, wordRest);
 	}
@@ -60,16 +60,16 @@ public class CompressedTrie {
 	
 	private boolean searchHelper(CompressedTrieNode node, String word) {
 		if(word.length() == 0)
-			return node.isEndOfWord;
+			return node.isEndOfWord();
 		Edge common = node.getEdgeByFirstChar(word.charAt(0));
 		// If there's not an edge with word.charAt[0]
 		if (common == null)
 			return false;
 		// Find prefix
-		if(!word.startsWith(common.label))
+		if(!word.startsWith(common.getLabel()))
 			return false;
-		String wordRest = word.substring(common.label.length());
-		return searchHelper(common.child, wordRest);
+		String wordRest = word.substring(common.getLabel().length());
+		return searchHelper(common.getChild(), wordRest);
 	}	
 	
    public static void main(String[] args) {

@@ -2,11 +2,13 @@ package trie;
 
 public class CompressedTrieNode {
 	private RobinHoodHashtable hashtable;
-	public boolean isEndOfWord;
+	private boolean isEndOfWord;
+	private int importance;
 	
 	public CompressedTrieNode() {
 		this.hashtable = new RobinHoodHashtable();
 		this.isEndOfWord = false;
+		this.importance = 0;
 	}
 	
 	public void insertEdge(Edge edge) {
@@ -19,6 +21,22 @@ public class CompressedTrieNode {
 	
 	public SinglyLinkedList getAllEdges() {
 		return this.hashtable.getAllEdges();
+	}
+
+	public boolean isEndOfWord(){
+		return isEndOfWord;
+	}
+
+	public void setIsEndOfWord(boolean isEndOfWord){
+		this.isEndOfWord = isEndOfWord;
+	}
+
+	public int getImportance(){
+		return importance;
+	}
+
+	public void setImportance(int importance){
+		this.importance = importance;
 	}
 }
 

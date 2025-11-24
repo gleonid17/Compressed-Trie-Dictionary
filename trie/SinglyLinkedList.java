@@ -29,7 +29,7 @@ public class SinglyLinkedList {
 	public Edge getEdge (char c) {
 	    Node tester = this.head;
 	    while (tester != null) {
-	    	if(tester.edge.label.charAt(0) == c)
+	    	if(tester.edge.getLabel().charAt(0) == c)
 	    		return tester.edge;
 	    	tester = tester.next;
 	    }
