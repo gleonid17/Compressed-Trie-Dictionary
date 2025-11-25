@@ -6,7 +6,7 @@ public class Menu{
     public static void main(String[] args) {
 
         if(args.length != 2){
-            System.err.println("Wrong number of arguments given!\nCorrenct execution command: "); // Enter execution command
+            System.err.println("Wrong number of arguments given!\nCorrenct execution command: java Menu wordFile.txt textFile.txt"); // Enter execution command
             System.exit(1);
         }
 
@@ -25,6 +25,7 @@ public class Menu{
         dictionary.updateImportance(importanceFile);
 
         CompressedTrie trie = dictionary.getTrie();
+        PrefixAnalyzer analyzer = new PrefixAnalyzer(trie);
 
         int option;
 
@@ -40,6 +41,9 @@ public class Menu{
                 System.out.println("Wrong input, give option again");
                 option = in.nextInt();
             }
+            String prefix;
+            int first = 0, last = 0;
+            boolean foundFirst = false, foundLast = false;
             switch(option){
                 case 1:
                     System.out.println("Give the number of words you need");
@@ -49,14 +53,99 @@ public class Menu{
                         k = in.nextInt();
                     }
                     System.out.println("Give the prefix");
-                    String prefix = in.next();
-                    prefix = prefix.toLowerCase();
-                    for (int i = 0; i < prefix.length(); i++){
-                        if (! (prefix.charAt(i) >= 'a' && prefix.charAt(i) <= 'z')){
-                            //needs teleiwma
+                    prefix = in.next().toLowerCase();
+                    first = 0; 
+                    last = 0;
+                    foundFirst = false;
+                    foundLast = false;
+                    for (first = 0; first < prefix.length(); first++) {
+                        if (prefix.charAt(first) >= 'a' && prefix.charAt(first) <= 'z') {
+                            foundFirst = true;
+                            break;
                         }
                     }
-
+                    for (last = prefix.length() - 1; last >= 0; last--) {
+                        if (prefix.charAt(last) >= 'a' && prefix.charAt(last) <= 'z') {
+                        foundLast = true;
+                        break;
+                        }
+                    }
+                    if (foundFirst && foundLast) {
+                        prefix = prefix.substring(first, last + 1);
+                        String[] results = analyzer.topKFrequentWordsWithPrefix(prefix, k);
+                        System.out.println("The top " + k + " words with prefix " + prefix + " are:");
+                        for (int j = 0; j < results.length; j++) {
+                            System.out.println(results[j]);
+                        }
+                    }
+                    else {
+                        System.out.println("No valid characters in prefix!");
+                    }
+                    break;
+                case 2:
+                    System.out.println("Give the prefix");
+                    prefix = in.next().toLowerCase();
+                    first = 0; 
+                    last = 0;
+                    foundFirst = false; 
+                    foundLast = false;
+                    for (first = 0; first < prefix.length(); first++) {
+                        if (prefix.charAt(first) >= 'a' && prefix.charAt(first) <= 'z') {
+                            foundFirst = true;
+                            break;
+                        }
+                    }
+                    for (last = prefix.length() - 1; last >= 0; last--) {
+                        if (prefix.charAt(last) >= 'a' && prefix.charAt(last) <= 'z') {
+                        foundLast = true;
+                        break;
+                        }
+                    }
+                    if (foundFirst && foundLast) {
+                        prefix = prefix.substring(first, last + 1);
+                        float average = analyzer.getAverageFrequencyOfPrefix(prefix);
+                        System.out.println("The average frequency of words with prefix " + prefix + " is: " + average);
+                    }
+                    else {
+                        System.out.println("No valid characters in prefix!");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Give the prefix");
+                    prefix = in.next().toLowerCase();
+                    first = 0; 
+                    last = 0;
+                    foundFirst = false; 
+                    foundLast = false;
+                    for (first = 0; first < prefix.length(); first++) {
+                        if (prefix.charAt(first) >= 'a' && prefix.charAt(first) <= 'z') {
+                            foundFirst = true;
+                            break;
+                        }
+                    }
+                    for (last = prefix.length() - 1; last >= 0; last--) {
+                        if (prefix.charAt(last) >= 'a' && prefix.charAt(last) <= 'z') {
+                        foundLast = true;
+                        break;
+                        }
+                    }
+                    if (foundFirst && foundLast) {
+                        prefix = prefix.substring(first, last + 1);
+                        char character;
+                        try{
+                            character = analyzer.predictNextLetter(prefix);
+                        }catch(Exception e){
+                            System.out.println(e.getMessage());
+                            break;
+                        }
+                        System.out.println("The most probable character after prefix " + prefix + " is: " + character);
+                    }
+                    else {
+                        System.out.println("No valid characters in prefix!");
+                    }
+                    break;
+                case 4:
+                    break;
             }
 
         }while(option!=4);

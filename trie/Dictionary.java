@@ -16,30 +16,27 @@ public class Dictionary {
             Scanner in = new Scanner(file);
             while(in.hasNext()) {
                 String word = in.next().toLowerCase();
-                boolean foundFirst = false, foundLast = false;
                 int first = 0, last = 0;
                 for (first = 0; first < word.length(); first++) {
                     if (word.charAt(first) >= 'a' && word.charAt(first) <= 'z') {
-                        foundFirst = true;
                         break;
                     }
                 }
                 for (last = word.length() - 1; last >= 0; last--) {
                     if (word.charAt(last) >= 'a' && word.charAt(last) <= 'z') {
-                        foundLast = true;
                         break;
                     }
                 }
-                if (foundFirst && foundLast) {
-                    word = word.substring(first, last + 1);
+                word = word.substring(first, last + 1);
+                if(word.length() > 0)
                     this.dictionary.insert(word);
-                }
-                in.close();
             }
+            in.close();
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage()); //En eimai sigouros an en swsto throw exception
             System.exit(1);
         }
+
     }
 
     public void updateImportance(String filename) {
@@ -48,26 +45,24 @@ public class Dictionary {
             Scanner in = new Scanner(file);
             while(in.hasNext()) {
                 String word = in.next().toLowerCase();
-                boolean foundFirst = false, foundLast = false;
                 int first = 0, last = 0;
                 for (first = 0; first < word.length(); first++) {
-                    if (word.charAt(first) >= 'a' && word.charAt(first) <= 'z') {
-                        foundFirst = true;
+                    if (word.charAt(first) >= 'a' && word.charAt(first) <= 'z') 
                         break;
-                    }
                 }
                 for (last = word.length() - 1; last >= 0; last--) {
-                    if (word.charAt(last) >= 'a' && word.charAt(last) <= 'z') {
-                        foundLast = true;
+                    if (word.charAt(last) >= 'a' && word.charAt(last) <= 'z') 
                         break;
-                    }
                 }
-                if (foundFirst && foundLast) {
-                    if (this.dictionary.search(word))
-                        this.dictionary.findPrefixNode(word).node.incrementImportance();
-                }
-                in.close();
+
+                word = word.substring(first, last + 1);
+                if(word.length() == 0)
+                    continue;
+
+                if (this.dictionary.search(word))
+                    this.dictionary.findPrefixNode(word).node.incrementImportance();
             }
+            in.close();
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage()); //En eimai sigouros an en swsto throw exception
             System.exit(1);

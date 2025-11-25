@@ -17,26 +17,30 @@ public class MinHeap{
     public MinHeap(int maxSize){
         this.maxSize = maxSize;
         this.currentlyStored = 0;
-        this.contents = new HeapNode[maxSize];
+        this.contents = new HeapNode[maxSize + 1];
     }
 
     public boolean isFull(){
-        return this.currentlyStored == this.maxSize;
+        return this.currentlyStored >= this.maxSize;
     }
 
     public void insert(String contents, int importance){
         if (isFull()) 
-            return; 
+            throw new IllegalStateException("Heap is full");
+
         HeapNode newNode = new HeapNode(contents, importance);
-        this.contents[++this.currentlyStored] = newNode;
+        this.currentlyStored++;
+        this.contents[currentlyStored] = newNode;
         percolateUp(this.currentlyStored);
     }
 
     
     public void insert(HeapNode node){
         if (isFull()) 
-            return; // Return or throw exception
-        this.contents[++this.currentlyStored] = node;
+            throw new IllegalStateException("Heap is full");
+
+        this.currentlyStored++;
+        this.contents[currentlyStored] = node;
         percolateUp(this.currentlyStored);
     }
     
@@ -49,23 +53,9 @@ public class MinHeap{
         if (isEmpty()) {
             return;
         }
-        HeapNode last = contents[currentlyStored]; //last node
+        contents[1] = contents[currentlyStored]; // switch last and first node
         currentlyStored--;
-        int x = 1;
-        int child;
-        while (x * 2 <= currentlyStored) {
-            child = x * 2; //left child
-            if (child != currentlyStored && contents[child + 1].importance < contents[child].importance) {
-                child++;
-            }
-            if (last.importance > contents[child].importance) {
-                contents[x] = contents[child];
-                x = child;
-            } else {
-                break;
-            }
-        }
-        contents[x] = last;
+        percolateDown(1);
     }
 
     public HeapNode getTop(){
@@ -86,8 +76,8 @@ public class MinHeap{
         int j;
         while (2 * index <= this.currentlyStored) {
             j = 2 * index;
-            if (j < this.currentlyStored && this.contents[j + 1].importance < this.contents[j].importance) {
-                j = j++;
+            if (j + 1 <= this.currentlyStored && this.contents[j + 1].importance < this.contents[j].importance) {
+                j++;
             }
             if (k.importance > this.contents[j].importance) {
                 this.contents[index] = this.contents[j];
@@ -100,7 +90,7 @@ public class MinHeap{
     }
 
     private void buildHeap(){
-        for (int i = this.currentlyStored / 2; i >= 0; i--) {
+        for (int i = this.currentlyStored / 2; i >= 1; i--) {
             percolateDown(i);
         }
     }
