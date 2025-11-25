@@ -3,6 +3,16 @@ package trie;
 public class CompressedTrie {
 	CompressedTrieNode root;
 
+	public class PrefixResult {
+        public CompressedTrieNode node;
+        public String suffix;
+
+        public PrefixResult(CompressedTrieNode node, String suffix) {
+            this.node = node;
+            this.suffix = suffix;
+        }
+    }
+
 	public CompressedTrie() {
 		this.root = new CompressedTrieNode();
 	}
@@ -57,7 +67,7 @@ public class CompressedTrie {
 			return false;
 		return searchHelper(this.root, word);
 	}
-	
+
 	private boolean searchHelper(CompressedTrieNode node, String word) {
 		if(word.length() == 0)
 			return node.isEndOfWord();
@@ -71,6 +81,53 @@ public class CompressedTrie {
 		String wordRest = word.substring(common.getLabel().length());
 		return searchHelper(common.getChild(), wordRest);
 	}	
+
+	public PrefixResult findPrefixNode(String prefix) {
+        if (this.root == null)
+            return null;
+        return findPrefixNodeHelper(this.root, prefix);
+    }
+
+    private PrefixResult findPrefixNodeHelper(CompressedTrieNode node, String prefix) {
+        // Base case
+        if (prefix.length() == 0)
+            return new PrefixResult(node, "");
+
+        Edge edge = node.getEdgeByFirstChar(prefix.charAt(0));
+        if (edge == null) // No words start with first char of prefix
+            return null;
+
+        // Case 1: Prefix is shorter or equal to edge label
+        if (prefix.length() <= edge.getLabel().length()) {
+            // Check if prefix is the same as the first letters of label
+            boolean samePrefix = true;
+            for (int i = 0; i < prefix.length(); i++) {
+                if (prefix.charAt(i) != edge.getLabel().charAt(i)) {
+                    samePrefix = false;
+                    break;
+                }
+            }
+
+            if (samePrefix) {
+                return new PrefixResult(edge.getChild(), edge.getLabel().substring(prefix.length()));
+            } else
+                return null;
+        } else { // Case 2: prefix is longer
+            boolean samePrefix = true;
+            for (int i = 0; i < edge.getLabel().length(); i++) {
+                if (prefix.charAt(i) != edge.getLabel().charAt(i)) {
+                    samePrefix = false;
+                    break;
+                }
+            }
+
+            if (samePrefix) {
+                String remainingPrefix = prefix.substring(edge.getLabel().length());
+                return findPrefixNodeHelper(edge.getChild(), remainingPrefix);
+            } else
+                return null;
+        }
+    }
 	
    public static void main(String[] args) {
         CompressedTrie trie = new CompressedTrie();

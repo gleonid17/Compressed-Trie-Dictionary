@@ -38,6 +38,10 @@ public class CompressedTrieNode {
 	public void setImportance(int importance){
 		this.importance = importance;
 	}
+
+	public void incrementImportance(){
+		this.importance++;
+	}
 }
 
 //Just replased "edgelist" with "hashtable" and "getEdgeByFirstChar" with "search"

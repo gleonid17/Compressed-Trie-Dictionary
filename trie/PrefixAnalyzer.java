@@ -3,16 +3,6 @@ package trie;
 public class PrefixAnalyzer {
     private CompressedTrie dictionary;
 
-    private class PrefixResult {
-        public CompressedTrieNode node;
-        public String suffix;
-
-        public PrefixResult(CompressedTrieNode node, String suffix) {
-            this.node = node;
-            this.suffix = suffix;
-        }
-    }
-
     public PrefixAnalyzer(CompressedTrie dictionary) {
         this.dictionary = dictionary;
     }
@@ -20,59 +10,11 @@ public class PrefixAnalyzer {
     public String[] topKFrequentWordsWithPrefix(String prefix, int k) {
         MinHeap heap = new MinHeap(k);
 
-        PrefixResult result = findPrefixNode(prefix);
-        if (result == null)
+        CompressedTrie.PrefixResult result = dictionary.findPrefixNode(prefix);        if (result == null)
+        if (result == null)    
             return new String[0];
-
         fillHeap(heap, result.node, prefix + result.suffix);
         return heap.heapSort();
-    }
-
-    private PrefixResult findPrefixNode(String prefix) {
-        if (dictionary.root == null)
-            return null;
-        return findPrefixNodeHelper(dictionary.root, prefix);
-    }
-
-    private PrefixResult findPrefixNodeHelper(CompressedTrieNode node, String prefix) {
-        // Base case
-        if (prefix.length() == 0)
-            return new PrefixResult(node, "");
-
-        Edge edge = node.getEdgeByFirstChar(prefix.charAt(0));
-        if (edge == null) // No words start with first char of prefix
-            return null;
-
-        // Case 1: Prefix is shorter or equal to edge label
-        if (prefix.length() <= edge.getLabel().length()) {
-            // Check if prefix is the same as the first letters of label
-            boolean samePrefix = true;
-            for (int i = 0; i < prefix.length(); i++) {
-                if (prefix.charAt(i) != edge.getLabel().charAt(i)) {
-                    samePrefix = false;
-                    break;
-                }
-            }
-
-            if (samePrefix) {
-                return new PrefixResult(edge.getChild(), edge.getLabel().substring(prefix.length()));
-            } else
-                return null;
-        } else { // Case 2: prefix is longer
-            boolean samePrefix = true;
-            for (int i = 0; i < edge.getLabel().length(); i++) {
-                if (prefix.charAt(i) != edge.getLabel().charAt(i)) {
-                    samePrefix = false;
-                    break;
-                }
-            }
-
-            if (samePrefix) {
-                String remainingPrefix = prefix.substring(edge.getLabel().length());
-                return findPrefixNodeHelper(edge.getChild(), remainingPrefix);
-            } else
-                return null;
-        }
     }
 
     private void fillHeap(MinHeap heap, CompressedTrieNode node, String word) {
@@ -100,7 +42,7 @@ public class PrefixAnalyzer {
     }
 
     public float getAverageFrequencyOfPrefix(String prefix) {
-        PrefixResult searchResult = findPrefixNode(prefix);
+        CompressedTrie.PrefixResult searchResult = dictionary.findPrefixNode(prefix);
         if (searchResult == null)
             return 0;
 
@@ -172,7 +114,7 @@ public class PrefixAnalyzer {
     // }
 
     public char predictNextLetter(String prefix) throws Exception {
-        PrefixResult searchResult = findPrefixNode(prefix);
+        CompressedTrie.PrefixResult searchResult = dictionary.findPrefixNode(prefix);
         if (searchResult == null)
             throw new Exception("Cannot predict next letter!");
 

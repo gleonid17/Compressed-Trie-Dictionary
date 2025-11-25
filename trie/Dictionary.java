@@ -16,57 +16,60 @@ public class Dictionary {
             Scanner in = new Scanner(file);
             while(in.hasNext()) {
                 String word = in.next().toLowerCase();
-                while(1) {
-                    int first = 0, last = word.length() - 1;
-                    boolean foundFirst = false, foundLast = false;
-                    
+                boolean foundFirst = false, foundLast = false;
+                int first = 0, last = 0;
+                for (first = 0; first < word.length(); first++) {
+                    if (word.charAt(first) >= 'a' && word.charAt(first) <= 'z') {
+                        foundFirst = true;
+                        break;
+                    }
                 }
+                for (last = word.length() - 1; last >= 0; last--) {
+                    if (word.charAt(last) >= 'a' && word.charAt(last) <= 'z') {
+                        foundLast = true;
+                        break;
+                    }
+                }
+                if (foundFirst && foundLast) {
+                    word = word.substring(first, last + 1);
+                    this.dictionary.insert(word);
+                }
+                in.close();
             }
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage()); //En eimai sigouros an en swsto throw exception
+            System.exit(1);
         }
     }
 
-    // The word doesn't need to be trimmed, just lowercased right?
-    /*public void loadDictionary(String filename) {
-        try (FileReader in = new FileReader(filename)) {
-            StringBuilder word = new StringBuilder();
-            int character;
-            while ((character = in.read()) != -1) {
-                if (character >= 'A' && character <= 'Z') {
-                    character = character - 'A' + 'a';
-                }
-                if (character == '\n' || character == ' ' || character == '\r' || character == '\t') {
-                    this.dictionary.insert(word.toString());
-                    word.setLength(0);
-                }
-                else {
-                    word.append(character);
-                }
-            }
-        }catch (IOException e) {
-            System.err.println("Error: " + e.getMessage());
-            System.exit(1);
-        }
-    }*/
-
     public void updateImportance(String filename) {
-        try (FileReader in = new FileReader(filename)) {
-            StringBuilder word = new StringBuilder();
-            int character;
-            while ((character = in.read()) != -1) {
-                if (character >= 'A' && character <= 'Z') {
-                    character = character - 'A' + 'a';
+        try {
+            File file = new File(filename);
+            Scanner in = new Scanner(file);
+            while(in.hasNext()) {
+                String word = in.next().toLowerCase();
+                boolean foundFirst = false, foundLast = false;
+                int first = 0, last = 0;
+                for (first = 0; first < word.length(); first++) {
+                    if (word.charAt(first) >= 'a' && word.charAt(first) <= 'z') {
+                        foundFirst = true;
+                        break;
+                    }
                 }
-                if (character == '\n' || character == ' ' || character == '\r' || character == '\t') {
-                    int letters = 0;
-
-                    word.setLength(0);
+                for (last = word.length() - 1; last >= 0; last--) {
+                    if (word.charAt(last) >= 'a' && word.charAt(last) <= 'z') {
+                        foundLast = true;
+                        break;
+                    }
                 }
-                else {
-                    word.append(character);
+                if (foundFirst && foundLast) {
+                    if (this.dictionary.search(word))
+                        this.dictionary.findPrefixNode(word).node.incrementImportance();
                 }
+                in.close();
             }
-        }catch (IOException e) {
-            System.err.println("Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage()); //En eimai sigouros an en swsto throw exception
             System.exit(1);
         }
     }
