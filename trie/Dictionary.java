@@ -15,19 +15,7 @@ public class Dictionary {
             File file = new File(filename);
             Scanner in = new Scanner(file);
             while(in.hasNext()) {
-                String word = in.next().toLowerCase();
-                int first = 0, last = 0;
-                for (first = 0; first < word.length(); first++) {
-                    if (word.charAt(first) >= 'a' && word.charAt(first) <= 'z') {
-                        break;
-                    }
-                }
-                for (last = word.length() - 1; last >= 0; last--) {
-                    if (word.charAt(last) >= 'a' && word.charAt(last) <= 'z') {
-                        break;
-                    }
-                }
-                word = word.substring(first, last + 1);
+                String word = cleanWord(in.next());
                 if(word.length() > 0)
                     this.dictionary.insert(word);
             }
@@ -44,18 +32,7 @@ public class Dictionary {
             File file = new File(filename);
             Scanner in = new Scanner(file);
             while(in.hasNext()) {
-                String word = in.next().toLowerCase();
-                int first = 0, last = 0;
-                for (first = 0; first < word.length(); first++) {
-                    if (word.charAt(first) >= 'a' && word.charAt(first) <= 'z') 
-                        break;
-                }
-                for (last = word.length() - 1; last >= 0; last--) {
-                    if (word.charAt(last) >= 'a' && word.charAt(last) <= 'z') 
-                        break;
-                }
-
-                word = word.substring(first, last + 1);
+                String word = cleanWord(in.next());
                 if(word.length() == 0)
                     continue;
 
@@ -71,5 +48,23 @@ public class Dictionary {
 
     public CompressedTrie getTrie(){
         return dictionary;
+    }
+
+    public static String cleanWord(String word) {
+        if (word == null || word.length() == 0) 
+            return "";
+        word = word.toLowerCase();
+        int first = 0, last = 0;
+        for (first = 0; first < word.length(); first++) {
+            if (word.charAt(first) >= 'a' && word.charAt(first) <= 'z') 
+                break;
+        }
+        for (last = word.length() - 1; last >= 0; last--) {
+            if (word.charAt(last) >= 'a' && word.charAt(last) <= 'z') 
+                break;
+        }
+        if (first > last || first >= word.length()) 
+            return "";
+        return word.substring(first, last + 1);
     }
 }

@@ -53,25 +53,9 @@ public class Menu{
                         k = in.nextInt();
                     }
                     System.out.println("Give the prefix");
-                    prefix = in.next().toLowerCase();
-                    first = 0; 
-                    last = 0;
-                    foundFirst = false;
-                    foundLast = false;
-                    for (first = 0; first < prefix.length(); first++) {
-                        if (prefix.charAt(first) >= 'a' && prefix.charAt(first) <= 'z') {
-                            foundFirst = true;
-                            break;
-                        }
-                    }
-                    for (last = prefix.length() - 1; last >= 0; last--) {
-                        if (prefix.charAt(last) >= 'a' && prefix.charAt(last) <= 'z') {
-                        foundLast = true;
-                        break;
-                        }
-                    }
-                    if (foundFirst && foundLast) {
-                        prefix = prefix.substring(first, last + 1);
+                    prefix = in.next();
+                    prefix = Dictionary.cleanWord(prefix);
+                    if (prefix.length() > 0) {
                         String[] results = analyzer.topKFrequentWordsWithPrefix(prefix, k);
                         System.out.println("The top " + k + " words with prefix " + prefix + " are:");
                         for (int j = 0; j < results.length; j++) {
@@ -84,25 +68,8 @@ public class Menu{
                     break;
                 case 2:
                     System.out.println("Give the prefix");
-                    prefix = in.next().toLowerCase();
-                    first = 0; 
-                    last = 0;
-                    foundFirst = false; 
-                    foundLast = false;
-                    for (first = 0; first < prefix.length(); first++) {
-                        if (prefix.charAt(first) >= 'a' && prefix.charAt(first) <= 'z') {
-                            foundFirst = true;
-                            break;
-                        }
-                    }
-                    for (last = prefix.length() - 1; last >= 0; last--) {
-                        if (prefix.charAt(last) >= 'a' && prefix.charAt(last) <= 'z') {
-                        foundLast = true;
-                        break;
-                        }
-                    }
-                    if (foundFirst && foundLast) {
-                        prefix = prefix.substring(first, last + 1);
+                    prefix = Dictionary.cleanWord(in.next());
+                    if (prefix.length() > 0) {
                         float average = analyzer.getAverageFrequencyOfPrefix(prefix);
                         System.out.println("The average frequency of words with prefix " + prefix + " is: " + average);
                     }
@@ -112,25 +79,8 @@ public class Menu{
                     break;
                 case 3:
                     System.out.println("Give the prefix");
-                    prefix = in.next().toLowerCase();
-                    first = 0; 
-                    last = 0;
-                    foundFirst = false; 
-                    foundLast = false;
-                    for (first = 0; first < prefix.length(); first++) {
-                        if (prefix.charAt(first) >= 'a' && prefix.charAt(first) <= 'z') {
-                            foundFirst = true;
-                            break;
-                        }
-                    }
-                    for (last = prefix.length() - 1; last >= 0; last--) {
-                        if (prefix.charAt(last) >= 'a' && prefix.charAt(last) <= 'z') {
-                        foundLast = true;
-                        break;
-                        }
-                    }
-                    if (foundFirst && foundLast) {
-                        prefix = prefix.substring(first, last + 1);
+                    prefix = Dictionary.cleanWord(in.next());
+                    if (prefix.length() > 0) {
                         char character;
                         try{
                             character = analyzer.predictNextLetter(prefix);
