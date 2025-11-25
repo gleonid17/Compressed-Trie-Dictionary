@@ -105,8 +105,9 @@ public class MinHeap{
         }
     }
 
+    //Leo Sort
     //The following method keeps the curent heap as is
-    public String[] sort(){ 
+    /*public String[] sort(){ 
         HeapNode[] tempContents = new HeapNode[this.currentlyStored + 1];
         for (int i = 1; i <= this.currentlyStored; i++)
             tempContents[i] = this.contents[i];
@@ -118,6 +119,17 @@ public class MinHeap{
         }
         this.contents = tempContents;
         this.currentlyStored = tempSize;
+        return sortedArray;
+    }
+    */
+
+    public String[] heapSort(){
+        buildHeap();
+        String[] sortedArray = new String[this.currentlyStored];
+            for (int i = this.currentlyStored; i > 0; i--){
+            sortedArray[i] = getTop().contents;
+            deleteMin();
+        }
         return sortedArray;
     }
 

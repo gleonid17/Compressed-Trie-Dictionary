@@ -25,7 +25,7 @@ public class PrefixAnalyzer {
             return new String[0];
 
         fillHeap(heap, result.node, prefix + result.suffix);
-        return heap.sort();
+        return heap.heapSort();
     }
 
     private PrefixResult findPrefixNode(String prefix) {
