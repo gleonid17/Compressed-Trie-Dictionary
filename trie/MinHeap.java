@@ -89,12 +89,12 @@ public class MinHeap{
         this.contents[index] = k;
     }
 
-    private void buildHeap(){
+    /*private void buildHeap(){
         for (int i = this.currentlyStored / 2; i >= 1; i--) {
             percolateDown(i);
         }
     }
-
+    */
     //Leo Sort
     //The following method keeps the curent heap as is
     /*public String[] sort(){ 
@@ -114,10 +114,9 @@ public class MinHeap{
     */
 
     public String[] heapSort(){
-        buildHeap();
         String[] sortedArray = new String[this.currentlyStored];
-            for (int i = this.currentlyStored; i > 0; i--){
-            sortedArray[i] = getTop().contents;
+            for (int i = this.currentlyStored; i >= 1; i--){
+            sortedArray[i-1] = getTop().contents;
             deleteMin();
         }
         return sortedArray;

@@ -147,7 +147,7 @@ public class Menu{
                 case 4:
                     break;
             }
-
+            System.out.println();
         }while(option!=4);
 
         in.close();

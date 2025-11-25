@@ -27,7 +27,7 @@ public class PrefixAnalyzer {
         if (node.isEndOfWord()) {
             if (!heap.isFull())
                 heap.insert(word, node.getImportance());
-            else if (node.getImportance() > heap.getTop().importance || node.getImportance() == heap.getTop().importance && word.compareTo(heap.getTop().contents) < 0) {
+            else if (node.getImportance() > heap.getTop().importance || (node.getImportance() == heap.getTop().importance && word.compareTo(heap.getTop().contents) < 0)) {
                 heap.deleteMin();
                 heap.insert(word, node.getImportance());
             }
