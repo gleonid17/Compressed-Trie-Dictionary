@@ -42,8 +42,6 @@ public class Menu{
                 option = in.nextInt();
             }
             String prefix;
-            int first = 0, last = 0;
-            boolean foundFirst = false, foundLast = false;
             switch(option){
                 case 1:
                     System.out.println("Give the number of words you need");
