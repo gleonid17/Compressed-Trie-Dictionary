@@ -6,7 +6,8 @@
             "name": "RobinHoodHashtable",
             "request": "launch",
             "mainClass": "trie.RobinHoodHashtable",
-            "projectName": "Compressed-Trie-Dictionary_73d3abfe"
+            "projectName": "Compressed-Trie-Dictionary",
+            "console": "integratedTerminal"
         },
         {
             "type": "java",
