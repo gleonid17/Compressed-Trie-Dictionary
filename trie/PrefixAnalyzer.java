@@ -10,7 +10,7 @@ public class PrefixAnalyzer {
     public String[] topKFrequentWordsWithPrefix(String prefix, int k) {
         MinHeap heap = new MinHeap(k);
 
-        CompressedTrie.PrefixResult result = dictionary.findPrefixNode(prefix);        if (result == null)
+        CompressedTrie.PrefixResult result = dictionary.findPrefixNode(prefix);
         if (result == null)    
             return new String[0];
         fillHeap(heap, result.node, prefix + result.suffix);

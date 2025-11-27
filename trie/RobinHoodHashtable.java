@@ -5,24 +5,16 @@ public class RobinHoodHashtable {
     private int maxProbeLength;
     private int capacity;
     private int size;
-    private static final int arrayOfPrimes[] = { 3, 7, 11, 17, 23, 29 };
-    private int primeIndex;
-    private boolean occupied[];
 
     public RobinHoodHashtable() {
-        this(arrayOfPrimes[0]);
+        this(3);
     }
 
     private RobinHoodHashtable(int capacity) {
         size = 0;
         this.capacity = capacity;
-        primeIndex = 0;
         maxProbeLength = 0;
         table = new Edge[capacity];
-
-        occupied = new boolean[capacity];
-        for (int i = 0; i < capacity; i++)
-            occupied[i] = false;
     }
 
     public void insert(Edge edge) {
@@ -39,9 +31,9 @@ public class RobinHoodHashtable {
     }
 
     private void insertHelper(Edge edge, int index, int probeLength) {
-        if (occupied[index] == false) {
+        if (table[index] == null || !table[index].isOccupied()) {
             table[index] = edge;
-            occupied[index] = true;
+            table[index].setOccupied(true);
 
             if (probeLength > maxProbeLength) {
                 maxProbeLength = probeLength;
@@ -74,12 +66,11 @@ public class RobinHoodHashtable {
 
     public Edge search(char firstChar) {
         int key = hash(firstChar);
-
         
         for (int i = 0; i <= maxProbeLength; i++) {
             int index = (key + i) % capacity;
 
-            if(occupied[index] == false)
+            if(table[index] == null || table[index].isOccupied() == false)
                 return null;
 
             else if (table[index].getLabel().charAt(0) == firstChar)
@@ -90,11 +81,20 @@ public class RobinHoodHashtable {
     }
 
     public void rehash() {
-        RobinHoodHashtable ht = new RobinHoodHashtable(arrayOfPrimes[primeIndex + 1]);
-        ht.primeIndex = this.primeIndex + 1;
+        int newSize;
+        switch(size){
+            case 3: newSize = 7; break;
+            case 7: newSize = 11; break;
+            case 11: newSize = 17; break;
+            case 17: newSize = 23; break;
+            case 23: newSize = 29; break;
+            default: newSize = 29; break;
+        }
+
+        RobinHoodHashtable ht = new RobinHoodHashtable(newSize);
 
         for (int i = 0; i < this.capacity; i++) {
-            if (occupied[i])
+            if (table[i]!= null && table[i].isOccupied())
                 ht.insert(this.table[i]);
         }
 
@@ -105,14 +105,11 @@ public class RobinHoodHashtable {
         this.capacity = ht.capacity;
         this.maxProbeLength = ht.maxProbeLength;
         this.size = ht.size;
-        this.primeIndex = ht.primeIndex;
 
         this.table = new Edge[ht.capacity];
-        this.occupied = new boolean[ht.capacity];
 
         for (int i = 0; i < ht.capacity; i++) {
             this.table[i] = ht.table[i];
-            this.occupied[i] = ht.occupied[i];
         }
     }
 
@@ -127,7 +124,7 @@ public class RobinHoodHashtable {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < capacity; i++) {
-            if (occupied[i] == false)
+            if (table[i] == null || !table[i].isOccupied())
                 sb.append("_ ");
             else
                 sb.append(table[i].getLabel() + ' ');
@@ -140,7 +137,7 @@ public class RobinHoodHashtable {
         SinglyLinkedList list = new SinglyLinkedList();
 
         for(int i=0; i<capacity; i++){
-            if(occupied[i] == true && table[i] != null)
+            if(table[i] != null && table[i].isOccupied())
                 list.insert(table[i]);
         }
 

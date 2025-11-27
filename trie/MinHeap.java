@@ -64,7 +64,7 @@ public class MinHeap{
 
     private void percolateUp(int index){
         HeapNode temp = this.contents[index];
-        while (index > 1 && temp.importance < this.contents[index / 2].importance) {
+        while (index > 1 && isHigherPriority(temp, contents[index/2])) {
             this.contents[index] = this.contents[index / 2];
             index = index / 2; 
         }
@@ -76,10 +76,10 @@ public class MinHeap{
         int j;
         while (2 * index <= this.currentlyStored) {
             j = 2 * index;
-            if (j + 1 <= this.currentlyStored && this.contents[j + 1].importance < this.contents[j].importance) {
+            if (j + 1 <= this.currentlyStored && isHigherPriority(contents[j+1], contents[j])) {
                 j++;
             }
-            if (k.importance > this.contents[j].importance) {
+            if (isHigherPriority(this.contents[j], k)) {
                 this.contents[index] = this.contents[j];
                 index = j;
             } else {
@@ -88,6 +88,17 @@ public class MinHeap{
         }
         this.contents[index] = k;
     }
+
+    private boolean isHigherPriority(HeapNode node1, HeapNode node2) {
+    if (node1.importance < node2.importance) {
+        return true;
+    }
+    if (node1.importance == node2.importance && 
+        node1.contents.compareTo(node2.contents) > 0) {
+        return true;
+    }
+    return false;
+}
 
     /*private void buildHeap(){
         for (int i = this.currentlyStored / 2; i >= 1; i--) {
