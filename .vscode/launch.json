@@ -14,7 +14,7 @@
             "request": "launch",
             "mainClass": "trie.Menu",
             "args": [
-                "dictionaryClean.txt",
+                "english_words.txt",
                 "pg2600.txt"
             ],
             "console": "integratedTerminal"
