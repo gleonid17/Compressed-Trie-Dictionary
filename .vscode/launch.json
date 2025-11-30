@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Trie",
+            "request": "launch",
+            "mainClass": "UC1366149_UC1367923.Trie",
+            "projectName": "Compressed-Trie-Dictionary_73d3abfe"
+        },
+        {
+            "type": "java",
             "name": "RobinHoodHashtable",
             "request": "launch",
             "mainClass": "UC1366149_UC1367923.RobinHoodHashtable",
