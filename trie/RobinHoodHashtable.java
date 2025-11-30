@@ -249,6 +249,22 @@ public class RobinHoodHashtable {
     }
 
     /**
+     * Deletes an entrie from the hashtable.
+     * 
+     * <p>
+     * Virtually deletes the given edge from the hashtable by setting its occupied flag to
+     * false.
+     * </p>
+     * 
+     * @param edge The edge to be deleted
+     */
+    public void delete(Edge edge){
+        if(edge == null)
+            return;
+        edge.setOccupied(false);
+    }
+
+    /**
      * Returns a string representation of the hashtable.
      * <p>
      * Shows the contents of each slot in the hashtable. Empty or unoccupied
