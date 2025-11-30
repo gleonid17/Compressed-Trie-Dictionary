@@ -5,7 +5,7 @@
             "type": "java",
             "name": "RobinHoodHashtable",
             "request": "launch",
-            "mainClass": "trie.RobinHoodHashtable",
+            "mainClass": "UC1366149_UC1367923.RobinHoodHashtable",
             "projectName": "Compressed-Trie-Dictionary",
             "console": "integratedTerminal"
         },
@@ -13,7 +13,7 @@
             "type": "java",
             "name": "Launch with Array Args",
             "request": "launch",
-            "mainClass": "trie.Menu",
+            "mainClass": "UC1366149_UC1367923.Menu",
             "args": [
                 "english_words.txt",
                 "pg2600.txt"
