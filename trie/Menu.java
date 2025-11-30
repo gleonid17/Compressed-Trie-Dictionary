@@ -82,7 +82,12 @@ public class Menu {
                     // Read prefix
                     prefix = readPrefixSafely(in);
                     String[] results = analyzer.topKFrequentWordsWithPrefix(prefix, k);
-                    System.out.println("The top " + k + " words with prefix " + prefix + " are:");
+                    if(results.length == k)
+                        System.out.println("The top " + k + " words with prefix " + prefix + " are:");
+                    else if( results.length > 0 && results.length < k)
+                        System.out.println("There are only " + results.length + " words with prefix: ");
+                    else
+                        System.out.println("There are no words starting with this prefix.");
                     for (int j = 0; j < results.length; j++) {
                         System.out.println(results[j]);
                     }   
@@ -111,6 +116,7 @@ public class Menu {
                     break;
 
                 case 4:
+                    System.out.println("Exiting program.");
                     break;
             }
 
