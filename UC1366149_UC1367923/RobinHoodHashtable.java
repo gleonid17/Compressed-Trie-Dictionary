@@ -1,4 +1,4 @@
-package trie;
+package UC1366149_UC1367923;
 
 /**
  * A hashtable implementation using Robin Hood hashing for efficient collision resolution.

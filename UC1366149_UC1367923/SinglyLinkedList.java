@@ -1,4 +1,4 @@
-package trie;
+package UC1366149_UC1367923;
 
 /**
  * A singly linked list implementation that stores Edge objects.

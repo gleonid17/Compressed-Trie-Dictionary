@@ -1,4 +1,4 @@
-package trie;
+package UC1366149_UC1367923;
 
 /**
  * A compressed trie data structure for efficient string storage and retrieval.

@@ -1,4 +1,4 @@
-package trie;
+package UC1366149_UC1367923;
 
 /**
  * A min-heap implementation for prioritizing strings based on importance values.

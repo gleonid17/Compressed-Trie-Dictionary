@@ -1,4 +1,4 @@
-package trie;
+package UC1366149_UC1367923;
 
 /**
  * Represents an edge in a compressed trie connecting a parent node to a child node.

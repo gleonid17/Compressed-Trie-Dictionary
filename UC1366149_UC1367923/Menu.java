@@ -1,4 +1,4 @@
-package trie;
+package UC1366149_UC1367923;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

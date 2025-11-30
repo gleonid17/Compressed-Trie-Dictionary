@@ -1,4 +1,4 @@
-package trie;
+package UC1366149_UC1367923;
 
 /**
  * Analyzes word prefixes in a compressed trie to provide autocomplete and prediction features.
