@@ -3,7 +3,56 @@ package trie;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Interactive command-line menu for the autocomplete and word analysis system.
+ * <p>
+ * This class provides a text-based user interface that allows users to:
+ * <ul>
+ * <li>Find the k most frequently used words with a given prefix</li>
+ * <li>Calculate average word frequency for a prefix</li>
+ * <li>Predict the most probable next character after a prefix</li>
+ * </ul>
+ * </p>
+ * <p>
+ * The program requires two command-line arguments:
+ * <ol>
+ * <li>Path to a dictionary file containing valid words</li>
+ * <li>Path to a text file used to calculate word importance/frequency</li>
+ * </ol>
+ * </p>
+ * <p>
+ * Usage: 
+ * <ol>
+ *  <li> Compilation: {@code javac *.java} </li>
+ *  <li> Execution: {@code java Menu wordFile.txt textFile.txt}</li>
+ * </p>
+ * 
+ * @author George Leonidou
+ * @author Nikolas Pomiloridis
+ * @version 1.0
+ */
+
 public class Menu {
+
+    /**
+     * Main entry point for the autocomplete system.
+     * <p>
+     * Initializes the dictionary and word importance data, then presents
+     * an interactive menu loop that continues until the user chooses to exit.
+     * </p>
+     * <p>
+     * The method performs the following steps:
+     * <ol>
+     * <li>Validates command-line arguments</li>
+     * <li>Loads the dictionary from the word file</li>
+     * <li>Updates word importance based on the text file</li>
+     * <li>Enters the interactive menu loop</li>
+     * </ol>
+     * </p>
+     * 
+     * @param args command-line arguments: args[0] = dictionary file path,
+     *             args[1] = text file path for importance calculation
+     */
     public static void main(String[] args) {
 
         if (args.length != 2) {
@@ -126,6 +175,24 @@ public class Menu {
     in.close();
     }
 
+    /**
+     * Safely reads and validates a prefix from user input.
+     * <p>
+     * Continuously prompts the user until a valid prefix is entered. A valid
+     * prefix must:
+     * <ul>
+     * <li>Contain at least one alphabetical character after cleaning</li>
+     * <li>Contain no special characters</li>
+     * </ul>
+     * </p>
+     * <p>
+     * The method uses {@link Dictionary#cleanWord(String)} to remove special
+     * characters and {@link Dictionary#hasSpecial(String)} to validate the result.
+     * </p>
+     * 
+     * @param inputStream the Scanner to read input from
+     * @return a valid, cleaned prefix containing only lowercase letters
+     */
     private static String readPrefixSafely(Scanner inputStream) {
         System.out.println("Give the prefix: ");
         String prefix;
