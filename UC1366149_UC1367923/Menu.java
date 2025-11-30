@@ -23,8 +23,8 @@ import java.util.Scanner;
  * <p>
  * Usage: 
  * <ol>
- *  <li> Compilation: {@code javac trie/*.java} </li>
- *  <li> Execution: {@code java trie.Menu dictionary.txt textFile.txt}</li>
+ *  <li> Compilation: {@code javac UC1366149_UC1367923/*.java} </li>
+ *  <li> Execution: {@code java UC1366149_UC1367923.Menu dictionary.txt textFile.txt}</li>
  * </p>
  * 
  * @author George Leonidou

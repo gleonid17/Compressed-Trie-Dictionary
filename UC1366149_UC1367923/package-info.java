@@ -32,12 +32,12 @@
  * <h2>How to Run</h2>
  * <p><strong>1. Compile:</strong></p>
  * <pre>{@code
- * javac trie/*.java
+ * javac UC1366149_UC1367923/*.java
  * }</pre>
  *
  * <p><strong>2. Run:</strong></p>
  * <pre>{@code
- * java trie.Menu dictionary.txt text.txt
+ * java UC1366149_UC1367923.Menu dictionary.txt text.txt
  * }</pre>
  *
  * <p>
