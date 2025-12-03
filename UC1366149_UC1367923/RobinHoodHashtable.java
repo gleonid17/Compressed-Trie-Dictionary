@@ -307,6 +307,15 @@ public class RobinHoodHashtable {
         return list;
     }
 
+    public int getSize(){
+        // has three integer fields and a table of edges
+        int bytes = 3 *  4;
+        for(int i=0; i< table.length; i++){
+            if(table[i] != null)
+                bytes += table[i].getSize();     
+        }
+    }
+
     /**
      * Main method for testing the Robin Hood hashtable implementation.
      * <p>

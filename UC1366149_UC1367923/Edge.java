@@ -124,4 +124,10 @@ public class Edge {
 	public boolean isOccupied(){
 		return occupied;
 	}
+
+
+	public int getSize(){
+		// Has a string and a boolean field
+		return label.length() * 2;
+	}
 }

@@ -98,7 +98,7 @@ public class WordAnalyzer {
 
     public static void main(String[] args){
 
-        WordAnalyzer wa = new WordAnalyzer("cleaned-words.txt");
+        WordAnalyzer wa = new WordAnalyzer("all-words-sum.txt");
 
         float[] charprobs = wa.getLetterProbability();
         float total = 0;
