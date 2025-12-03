@@ -127,7 +127,12 @@ public class Edge {
 
 
 	public int getSize(){
-		// Has a string and a boolean field
-		return label.length() * 2;
+		// Boolean field (1 byte) + child reference (8 bytes) + label reference (8 bytes)
+		int bytes = 1 + 8 + 8;
+		
+		if(label != null)
+			bytes += label.length() * 2;
+
+		return bytes;
 	}
 }
