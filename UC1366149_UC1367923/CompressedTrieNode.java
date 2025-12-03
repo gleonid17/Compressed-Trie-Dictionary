@@ -49,6 +49,10 @@ public class CompressedTrieNode {
 		this.isEndOfWord = false;
 		this.importance = 0;
 	}
+
+	public int getSize(){
+		return this.hashtable.getSize() + 13; //1 byte for isEndOfWord + 4 bytes for importance + 8 bytes for hashtable reference
+	}
 	
 	/**
 	 * Inserts an edge from this node to a child node.
