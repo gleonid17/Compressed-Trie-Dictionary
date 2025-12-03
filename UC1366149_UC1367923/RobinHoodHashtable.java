@@ -1,16 +1,22 @@
 package UC1366149_UC1367923;
 
 /**
- * A hashtable implementation using Robin Hood hashing for efficient collision resolution.
+ * A hashtable implementation using Robin Hood hashing for efficient collision
+ * resolution.
  * <p>
- * Robin Hood hashing is an open addressing scheme that reduces variance in probe lengths
- * by "stealing" from the rich (elements with short probe distances) and giving to the
- * poor (elements with long probe distances). When a collision occurs, if the new element
+ * Robin Hood hashing is an open addressing scheme that reduces variance in
+ * probe lengths
+ * by "stealing" from the rich (elements with short probe distances) and giving
+ * to the
+ * poor (elements with long probe distances). When a collision occurs, if the
+ * new element
  * has a longer probe distance than the existing element, they swap positions.
  * </p>
  * <p>
- * This implementation stores Edge objects and uses the first character of edge labels
- * as the key. The hashtable automatically rehashes when the load factor reaches 90%.
+ * This implementation stores Edge objects and uses the first character of edge
+ * labels
+ * as the key. The hashtable automatically rehashes when the load factor reaches
+ * 90%.
  * </p>
  * <p>
  * Key features:
@@ -29,7 +35,7 @@ package UC1366149_UC1367923;
 
 public class RobinHoodHashtable {
 
-    /** Array storing the edges in the hashtable.*/
+    /** Array storing the edges in the hashtable. */
     private Edge[] table;
 
     /**
@@ -67,12 +73,12 @@ public class RobinHoodHashtable {
         table = new Edge[capacity];
     }
 
-
     /**
      * Inserts an edge into the hashtable.
      * <p>
      * Uses Robin Hood hashing: during insertion, if a collision occurs and the
-     * new element has traveled further than the existing element, they swap positions.
+     * new element has traveled further than the existing element, they swap
+     * positions.
      * This reduces variance in probe lengths and improves average search time.
      * </p>
      * <p>
@@ -104,9 +110,10 @@ public class RobinHoodHashtable {
      * displaced element continues searching.
      * </p>
      * 
-     * @param edge the edge to insert
-     * @param index the current index being examined
-     * @param probeLength the number of positions this edge has traveled from its hash position
+     * @param edge        the edge to insert
+     * @param index       the current index being examined
+     * @param probeLength the number of positions this edge has traveled from its
+     *                    hash position
      */
     private void insertHelper(Edge edge, int index, int probeLength) {
         if (table[index] == null || !table[index].isOccupied()) {
@@ -151,15 +158,16 @@ public class RobinHoodHashtable {
      * </p>
      * 
      * @param firstChar the first character of the edge label to search for
-     * @return the Edge whose label starts with the specified character, or null if not found
+     * @return the Edge whose label starts with the specified character, or null if
+     *         not found
      */
     public Edge search(char firstChar) {
         int key = hash(firstChar);
-        
+
         for (int i = 0; i <= maxProbeLength; i++) {
             int index = (key + i) % capacity;
 
-            if(table[index] == null || table[index].isOccupied() == false)
+            if (table[index] == null || table[index].isOccupied() == false)
                 return null;
 
             else if (table[index].getLabel().charAt(0) == firstChar)
@@ -183,19 +191,31 @@ public class RobinHoodHashtable {
      */
     public void rehash() {
         int newSize;
-        switch(size){
-            case 3: newSize = 7; break;
-            case 7: newSize = 11; break;
-            case 11: newSize = 17; break;
-            case 17: newSize = 23; break;
-            case 23: newSize = 29; break;
-            default: newSize = 29; break;
+        switch (size) {
+            case 3:
+                newSize = 7;
+                break;
+            case 7:
+                newSize = 11;
+                break;
+            case 11:
+                newSize = 17;
+                break;
+            case 17:
+                newSize = 23;
+                break;
+            case 23:
+                newSize = 29;
+                break;
+            default:
+                newSize = 29;
+                break;
         }
 
         RobinHoodHashtable ht = new RobinHoodHashtable(newSize);
 
         for (int i = 0; i < this.capacity; i++) {
-            if (table[i]!= null && table[i].isOccupied())
+            if (table[i] != null && table[i].isOccupied())
                 ht.insert(this.table[i]);
         }
 
@@ -252,14 +272,15 @@ public class RobinHoodHashtable {
      * Deletes an entrie from the hashtable.
      * 
      * <p>
-     * Virtually deletes the given edge from the hashtable by setting its occupied flag to
+     * Virtually deletes the given edge from the hashtable by setting its occupied
+     * flag to
      * false.
      * </p>
      * 
      * @param edge The edge to be deleted
      */
-    public void delete(Edge edge){
-        if(edge == null)
+    public void delete(Edge edge) {
+        if (edge == null)
             return;
         edge.setOccupied(false);
     }
@@ -296,24 +317,28 @@ public class RobinHoodHashtable {
      * 
      * @return a SinglyLinkedList containing all edges in the hashtable
      */
-    public SinglyLinkedList getAllEdges(){
+    public SinglyLinkedList getAllEdges() {
         SinglyLinkedList list = new SinglyLinkedList();
 
-        for(int i=0; i<capacity; i++){
-            if(table[i] != null && table[i].isOccupied())
+        for (int i = 0; i < capacity; i++) {
+            if (table[i] != null && table[i].isOccupied())
                 list.insert(table[i]);
         }
 
         return list;
     }
 
-    public int getSize(){
-        // has three integer fields and a table of edges
-        int bytes = 3 *  4;
-        for(int i=0; i< table.length; i++){
-            if(table[i] != null)
-                bytes += table[i].getSize();     
+    public int getSize() {
+        // Four integer fields (3*4=12) + table reference (8 bytes)
+        int bytes = 3 * 4 + 8;
+
+        for (int i = 0; i < table.length; i++) {
+            bytes += 8; // Each array slot holds a reference (8 bytes)
+            if (table[i] != null)
+                bytes += table[i].getSize();
         }
+
+        return bytes;
     }
 
     /**

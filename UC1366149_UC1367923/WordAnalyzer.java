@@ -11,8 +11,8 @@ public class WordAnalyzer {
         this.filename = filename;
     }
 
-    public float[] getLetterProbability(){
-        float[] probabilities = new float[26];
+    public double[] getLetterProbability(){
+        double[] probabilities = new double[26];
         try{
             File input = new File(filename);
             Scanner scan = new Scanner(input);
@@ -33,7 +33,7 @@ public class WordAnalyzer {
             }
 
             for(int i=0; i<26; i++){
-                probabilities[i] = (float)count[i] / totalCount;
+                probabilities[i] = (double)count[i] / totalCount;
             }
 
             scan.close();
@@ -45,14 +45,14 @@ public class WordAnalyzer {
         return probabilities;
     }
 
-    public float[] getLengthProbability(){
+    public double[] getLengthProbability(){
         int size = maxLength() + 1;
-        float[] probability = new float[size];
+        double[] probability = new double[size];
         try{
             File input = new File(filename);
             Scanner scan = new Scanner(input);
 
-            float[] count = new float[size];
+            int[] count = new int[size];
             int totalWords = 0;
 
             while(scan.hasNext()){
@@ -62,7 +62,7 @@ public class WordAnalyzer {
             }
 
             for(int i=0; i<size; i++){
-                probability[i] = (float)count[i] / totalWords;
+                probability[i] = (double)count[i] / totalWords;
             }
 
             scan.close();
@@ -98,9 +98,9 @@ public class WordAnalyzer {
 
     public static void main(String[] args){
 
-        WordAnalyzer wa = new WordAnalyzer("all-words-sum.txt");
+        WordAnalyzer wa = new WordAnalyzer("words_alpha.txt");
 
-        float[] charprobs = wa.getLetterProbability();
+        double[] charprobs = wa.getLetterProbability();
         float total = 0;
         for(int i=0; i<charprobs.length; i++){
             System.out.println((char)(i + 'a') + " : " + charprobs[i]);
@@ -110,7 +110,7 @@ public class WordAnalyzer {
 
         System.out.println("\n****************************************\n");
 
-        float[] lengthProb = wa.getLengthProbability();
+        double[] lengthProb = wa.getLengthProbability();
         total = 0;
         for(int i=0; i<lengthProb.length; i++){
             System.out.println("Length of " + i + ": " + lengthProb[i]);
