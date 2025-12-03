@@ -75,6 +75,37 @@ public class WordAnalyzer {
         return probability;
     }
 
+    public String generateWord(int length, double[] characterProb){
+        String word = "";
+
+        double[] cumulative = getCumulativeProbability(characterProb);
+
+        for(int i=0; i<length; i++){
+            word += randomChar(cumulative);
+        }
+        return word;
+    }
+
+    private char randomChar(double[] cumulativeCharProb){
+        double random = Math.random();
+
+        for(int i=0; i<cumulativeCharProb.length; i++){
+            if(random < cumulativeCharProb[i])
+                return (char)('a' + i);
+        }
+
+        return 'z';
+    }
+
+    private double[] getCumulativeProbability(double[] probability){
+        double[] cumulative = new double[probability.length];
+        cumulative[0] = probability[0];
+        for(int i=1; i<probability.length; i++){
+            cumulative[i] = probability[i] + cumulative[i-1];
+        }
+        return cumulative;
+    }
+
     private int maxLength(){
         int maxLength = 0;
         try{
@@ -101,21 +132,33 @@ public class WordAnalyzer {
         WordAnalyzer wa = new WordAnalyzer("words_alpha.txt");
 
         double[] charprobs = wa.getLetterProbability();
-        float total = 0;
-        for(int i=0; i<charprobs.length; i++){
-            System.out.println((char)(i + 'a') + " : " + charprobs[i]);
-            total += charprobs[i];
-        }
-        System.out.println("Total: " + total);
+        // float total = 0;
+        // for(int i=0; i<charprobs.length; i++){
+        //     System.out.println((char)(i + 'a') + " : " + charprobs[i]);
+        //     total += charprobs[i];
+        // }
+        // System.out.println("Total: " + total);
 
-        System.out.println("\n****************************************\n");
+        // System.out.println("\n****************************************\n");
 
-        double[] lengthProb = wa.getLengthProbability();
-        total = 0;
-        for(int i=0; i<lengthProb.length; i++){
-            System.out.println("Length of " + i + ": " + lengthProb[i]);
-            total += lengthProb[i];
+        // double[] lengthProb = wa.getLengthProbability();
+        // total = 0;
+        // for(int i=0; i<lengthProb.length; i++){
+        //     System.out.println("Length of " + i + ": " + lengthProb[i]);
+        //     total += lengthProb[i];
+        // }
+        // System.out.println("Total: " + total);
+
+        // double[] cumulative = wa.getCumulativeProbability(charprobs);
+        // for(int i=0; i<cumulative.length; i++){
+        //     System.out.println(cumulative[i]);
+        // }
+
+        int i=1;
+        while(true){
+            if(wa.generateWord(5, charprobs).equals("louuu"))
+                System.out.println("found louuu at trie " + i);
+            i++;
         }
-        System.out.println("Total: " + total);
     }
 }
