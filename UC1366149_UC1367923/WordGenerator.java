@@ -114,11 +114,17 @@ public class WordGenerator {
     public void generateDictionary(int size){
         try{
             FileWriter output = new FileWriter("random-length_" + size +".txt");
+            HashSet hs = new HashSet(size);
             
-            output.write(generateWord());
+            String word = generateWord();
+            output.write(word);
+            hs.add(word);
             for(int i=1; i<size; i++){
                 output.write('\n');
-                output.write(generateWord());
+                word = generateWord();
+                while(hs.add(word) == false)
+                    word = generateWord();
+                output.write(word);
             }
 
             output.close();
@@ -133,11 +139,17 @@ public class WordGenerator {
     public void generateDictionary(int size, int wordLength){
         try{
             FileWriter output = new FileWriter("length" + wordLength + "_" + size +".txt");
-            
-            output.write(generateWord(wordLength));
+            HashSet hs = new HashSet(size);
+
+            String word = generateWord(wordLength);
+            output.write(word);
+            hs.add(word);
             for(int i=1; i<size; i++){
                 output.write('\n');
-                output.write(generateWord(wordLength));
+                word = generateWord(wordLength);
+                while(hs.add(word) == false)
+                    word = generateWord(wordLength);
+                output.write(word);
             }
 
             output.close();
