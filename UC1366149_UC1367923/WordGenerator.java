@@ -2,6 +2,7 @@ package UC1366149_UC1367923;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class WordGenerator {
@@ -207,8 +208,38 @@ public class WordGenerator {
     public static void main(String[] args){
         WordGenerator wg = new WordGenerator("words_alpha.txt");
 
+        // Generate Random length dictionaries
+        System.out.println("Generating random length words...\n");
+        wg.generateDictionary(10000);
+        wg.generateDictionary(100000);
+        wg.generateDictionary(500000);
         wg.generateDictionary(1000000);
-        wg.generateDictionary(1000000, 5);
+
+        int[] sizes = { 10000, 100000, 500000, 1000000 };
+        int[] lengths = { 3, 5, 7, 9, 11, 14, 18, 24, 28, 32 };
+
+        for (int L : lengths) {
+            System.out.println("Generating words of length " + L + "...\n");
+
+            long maxPossible = (long) Math.pow(26, L);
+
+            for (int size : sizes) {
+
+                // Safety check: impossible request → skip
+                if (maxPossible < size) {
+                    System.out.println(
+                        "ERROR: Cannot generate " + size +
+                        " unique words of length " + L +
+                        " (maximum is " + maxPossible + "). Skipping.\n"
+                    );
+                    continue;
+                }
+
+                wg.generateDictionary(size, L);
+            }
+        }
+
+
 
         // for(int i=0; i<100; i++){
         //     System.out.println(wg.generateWord());
