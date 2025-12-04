@@ -57,7 +57,7 @@ public class Dictionary {
             }
             in.close();
         } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage()); // En eimai sigouros an en swsto throw exception
+            System.err.println("Error: " + e.getMessage());
             e.printStackTrace();
             System.exit(1);
         }

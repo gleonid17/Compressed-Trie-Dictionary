@@ -1,24 +1,41 @@
 package UC1366149_UC1367923;
 
+import java.util.Scanner;
+import java.io.File;
+
 public class MemoryCounter{
 
-    private WordGenerator generator;
-    private CompressedTrie cTrie;
-    private Trie trie;
-
-    public MemoryCounter(String trainFile){
-        generator = new WordGenerator(trainFile);
-        cTrie = new CompressedTrie();
-        trie = new Trie();
-    }
-
-    public int[] getSizes(int numOfWords, int wordLength, String filename){
-        for(int i=0; i<numOfWords; i++){
-            trie.insert();
+    public static int getSizeTrie(String filename){
+        Trie trie = new Trie();
+        try {
+            File file = new File(filename);
+            Scanner in = new Scanner(file);
+            while (in.hasNext()) {
+                trie.insert(in.next());
+            }
+            in.close();
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
         }
+        return trie.getSize();
     }
 
-    public int[] getSizes(int numOfWords, String filename){
-
+    public static int getSizeCompressedTrie(String filename) {
+        CompressedTrie cTrie = new CompressedTrie();
+        try {
+            File file = new File(filename);
+            Scanner in = new Scanner(file);
+            while (in.hasNext()) {
+                cTrie.insert(in.next());
+            }
+            in.close();
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
+        }
+        return cTrie.getSize();
     }
 }
