@@ -38,4 +38,8 @@ public class MemoryCounter{
         }
         return cTrie.getSize();
     }
+
+    public static void main(String[] args) {
+        System.out.println(getSizeCompressedTrie("dictionaries/length3_10000.txt"));
+    }
 }

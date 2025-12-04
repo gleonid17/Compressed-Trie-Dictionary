@@ -80,24 +80,10 @@ public class CompressedTrie {
 	}
 
 	public int getSize() {
-		return getSumSizeOfNodes();
-	}
-
-	private int getSumSizeOfNodes(){
-		SinglyLinkedList edges = this.root.getAllEdges();
-		SinglyLinkedList.Node current = edges.head;
-		if (this.root == null) 
-			return 8; //8 bytes for root reference
-		else
-			return getSumSizeOfNodesHelper(current);
-	}
-
-	private int getSumSizeOfNodesHelper(SinglyLinkedList.Node node){
-		int size = 8; //8 bytes for hashtable reference
-		if (node != null) {
-			size += node.edge.getChild().getSize();
-		}
-		return size + getSumSizeOfNodesHelper(node.next);
+		int bytes = 8;	// root reference
+		if(root != null)
+			bytes += root.getSize();
+		return bytes;
 	}
 
 	/**

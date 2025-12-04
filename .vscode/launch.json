@@ -3,6 +3,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CompressedTrie",
+            "request": "launch",
+            "mainClass": "UC1366149_UC1367923.CompressedTrie",
+            "projectName": "Compressed-Trie-Dictionary_73d3abfe"
+        },
+        {
+            "type": "java",
+            "name": "MemoryCounter",
+            "request": "launch",
+            "mainClass": "UC1366149_UC1367923.MemoryCounter",
+            "projectName": "Compressed-Trie-Dictionary_73d3abfe"
+        },
+        {
+            "type": "java",
             "name": "WordGenerator",
             "request": "launch",
             "mainClass": "UC1366149_UC1367923.WordGenerator",

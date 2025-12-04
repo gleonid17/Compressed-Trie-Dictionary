@@ -51,7 +51,17 @@ public class CompressedTrieNode {
 	}
 
 	public int getSize(){
-		return this.hashtable.getSize() + 13; //1 byte for isEndOfWord + 4 bytes for importance + 8 bytes for hashtable reference
+		int bytes = 1 + 4 + 8;
+		bytes += hashtable.getSize();
+
+		SinglyLinkedList.Node currentEdge = hashtable.getAllEdges().head;
+		while(currentEdge != null){
+			if(currentEdge.edge.getChild() != null)
+				bytes += currentEdge.edge.getChild().getSize();
+			currentEdge = currentEdge.next;
+		}
+
+		return bytes;
 	}
 	
 	/**
