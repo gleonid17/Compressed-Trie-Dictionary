@@ -2,7 +2,6 @@ package UC1366149_UC1367923;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.util.HashSet;
 import java.util.Scanner;
 
 public class WordGenerator {
