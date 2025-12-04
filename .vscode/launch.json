@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "WordGenerator",
+            "request": "launch",
+            "mainClass": "UC1366149_UC1367923.WordGenerator",
+            "projectName": "Compressed-Trie-Dictionary_73d3abfe"
+        },
+        {
+            "type": "java",
             "name": "WordAnalyzer",
             "request": "launch",
             "mainClass": "UC1366149_UC1367923.WordAnalyzer",
