@@ -50,8 +50,8 @@ public class CompressedTrieNode {
 		this.importance = 0;
 	}
 
-	public int getSize(){
-		int bytes = 1 + 4 + 8;
+	public long getSize(){
+		long bytes = 1 + 4 + 8;
 		bytes += hashtable.getSize();
 
 		SinglyLinkedList.Node currentEdge = hashtable.getAllEdges().head;

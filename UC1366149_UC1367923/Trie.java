@@ -14,15 +14,15 @@ public class Trie {
 			isEndOfWord = false;
 		}
 
-		public int getSize(){
+		public long getSize(){
 			// 8 bytes for pointer to table and 1 byte for boolean
-			int bytes = 8 + 1;
+			long bytes = 8 + 1;
 
 			// size of table contents
 			if(children != null)
 				for(int i=0; i< children.length; i++){
 					bytes += 8; // pointer to TrieNode
-					
+
 					// If not null add the size of the child node
 					if(children[i] != null)
 						bytes += children[i].getSize();
@@ -128,9 +128,9 @@ public class Trie {
 		
 	}
 
-	public int getSize(){
+	public long getSize(){
 		// 4 bytes for alphabetsize and 8 bytes for root pointer
-		int bytes = 4 + 8;
+		long bytes = 4 + 8;
 		bytes += root.getSize();
 		return bytes;
 	}

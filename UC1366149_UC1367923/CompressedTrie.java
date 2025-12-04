@@ -79,8 +79,8 @@ public class CompressedTrie {
 		insertHelper(this.root, word);
 	}
 
-	public int getSize() {
-		int bytes = 8;	// root reference
+	public long getSize() {
+		long bytes = 8;	// root reference
 		if(root != null)
 			bytes += root.getSize();
 		return bytes;

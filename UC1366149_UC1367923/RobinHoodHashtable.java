@@ -328,9 +328,9 @@ public class RobinHoodHashtable {
         return list;
     }
 
-    public int getSize() {
+    public long getSize() {
         // Four integer fields (3*4=12) + table reference (8 bytes)
-        int bytes = 3 * 4 + 8;
+        long bytes = 3 * 4 + 8;
 
         for (int i = 0; i < table.length; i++) {
             bytes += 8; // Each array slot holds a reference (8 bytes)
