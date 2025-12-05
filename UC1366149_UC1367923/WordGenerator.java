@@ -208,14 +208,16 @@ public class WordGenerator {
         WordGenerator wg = new WordGenerator("words_alpha.txt");
 
         // Generate Random length dictionaries
-        System.out.println("Generating random length words...\n");
+        /*System.out.println("Generating random length words...\n");
         wg.generateDictionary(10000);
         wg.generateDictionary(100000);
         wg.generateDictionary(500000);
         wg.generateDictionary(1000000);
+        */
 
-        int[] sizes = { 10000, 100000, 500000, 1000000 };
-        int[] lengths = { 3, 5, 7, 9, 11, 14, 18, 24, 28, 32 };
+        int[] sizes = { 15000 };
+        //int[] lengths = { 3, 5, 7, 9, 11, 14, 18, 24, 28, 32 };
+        int[] lengths = { 3 };
 
         for (int L : lengths) {
             System.out.println("Generating words of length " + L + "...\n");

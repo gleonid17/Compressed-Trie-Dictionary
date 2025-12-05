@@ -45,7 +45,7 @@ public class MemoryCounter{
         try{
             PrintWriter outputCT = new PrintWriter("compressed-trie-memory.txt");
             PrintWriter outputT = new PrintWriter("trie-memory.txt");
-
+            /*
             System.out.println("Computing for random lengths...\n");
 
             outputCT.print("RANDOM LENGTH:\n");
@@ -72,10 +72,10 @@ public class MemoryCounter{
             outputT.print('\t');
             outputT.println();
             outputT.println();
+            */
 
-
-            int[] sizes = { 10000, 100000, 500000, 1000000 };
-            int[] lengths = { 3, 5, 7, 9, 11, 14, 18, 24, 28, 32 };
+            int[] sizes = { 5000, 10000, 15000, 17576 };
+            int[] lengths = { 3 };
 
             for (int L : lengths) {
                 System.out.println("Computing for length " + L + "...\n");
