@@ -130,20 +130,22 @@ public class Edge {
 		return occupied;
 	}
 
+	/**
+	 * Computes the approximate memory footprint of this {@code Edge} object,
+	 * including:
+	 * <ul>
+	 *     <li>The object itself (header, primitive fields, and references)</li>
+	 *     <li>The {@code String} label object, if present (object header, fields, padding)</li>
+	 *     <li>The {@code char[]} inside the label, including its array overhead and character data</li>
+	 * </ul>
+	 *
+	 * @return approximate memory footprint of this Edge and its label in bytes
+	 */
 	public long getSize() {
-		// Object overhead: 16 bytes
-		// boolean occupied: 1 byte
-		// Padding: 7 bytes
-		// Reference to child: 8 bytes
-		// Reference to label: 8 bytes
-		long bytes = 16 + 1 + 7 + 8 + 8; // = 40 bytes per Edge
+		long bytes = 16 + 1 + 7 + 8 + 8;
 
 		// String object overhead and character data
 		if (label != null) {
-			// String object overhead: 16 bytes
-			// Reference to char array: 8 bytes
-			// int hash: 4 bytes (cached hash code)
-			// Padding: 4 bytes
 			bytes += 16 + 8 + 4 + 4; // = 32 bytes per String
 
 			// char array overhead
@@ -155,8 +157,6 @@ public class Edge {
 			// Character data: 2 bytes per char
 			bytes += label.length() * 2;
 		}
-
-		// Note: child node size is NOT counted here, it's counted in CompressedTrieNode
 		return bytes;
 	}
 }

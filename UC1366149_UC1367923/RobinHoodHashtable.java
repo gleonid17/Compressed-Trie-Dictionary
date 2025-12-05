@@ -328,20 +328,22 @@ public class RobinHoodHashtable {
         return list;
     }
 
+    /**
+     * Computes the total memory usage of this hash table structure, including:
+     * <ul>
+     *     <li>The object itself (header, references, and primitive fields)</li>
+     *     <li>The internal array overhead for storing {@code Edge} references</li>
+     *     <li>The memory usage of all non-null {@code Edge} objects in the array</li>
+     * </ul>
+     *
+     * @return total memory footprint of this object and all contained edges, in bytes
+     */
     public long getSize() {
-        // Object overhead: 16 bytes
-        // Reference to table array: 8 bytes
-        // int maxProbeLength: 4 bytes
-        // int capacity: 4 bytes
-        // int size: 4 bytes
-        long bytes = 16 + 8 + 4 + 4 + 4; // = 36 bytes
+        long bytes = 16 + 8 + 4 + 4 + 4;
 
         // Array overhead for Edge[]
         if (table != null) {
-            // Array object overhead: 16 bytes
-            // Array length field: 4 bytes
-            // Padding: 4 bytes
-            bytes += 16 + 4 + 4; // = 24 bytes
+            bytes += 16 + 4 + 4;
 
             // Each array slot (reference): 8 bytes
             bytes += table.length * 8;

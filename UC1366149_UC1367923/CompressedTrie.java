@@ -82,10 +82,20 @@ public class CompressedTrie {
 		insertHelper(this.root, word);
 	}
 
+	/**
+	 * Computes the total memory usage of the entire CompressedTrie, including:
+	 * <ul>
+	 * <li>The CompressedTrie object itself (JVM header + fields)</li>
+	 * <li>The memory usage of the root node</li>
+	 * <li>All descendant nodes and edges recursively (via
+	 * {@code root.getSize()})</li>
+	 * </ul>
+	 * Total base cost: <strong>24 bytes</strong>.
+	 *
+	 * @return total memory footprint of the CompressedTrie in bytes
+	 */
 	public long getSize() {
-		// Object overhead for CompressedTrie: 16 bytes
-		// Reference to root: 8 bytes
-		long bytes = 16 + 8; // = 24 bytes
+		long bytes = 16 + 8;
 
 		if (root != null)
 			bytes += root.getSize();

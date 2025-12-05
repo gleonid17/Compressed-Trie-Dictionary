@@ -4,6 +4,29 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Scanner;
 
+/**
+ * The {@code WordGenerator} class builds statistical models of word lengths and
+ * character frequencies from a given dictionary file, and uses them to generate
+ * artificial words or full dictionary files.
+ * 
+ * <p>It computes:
+ * <ul>
+ *   <li>Character probabilities and their cumulative distribution (CDF)</li>
+ *   <li>Word-length probabilities and CDF</li>
+ * </ul>
+ * 
+ * The generator can create dictionaries of:
+ * <ul>
+ *   <li>Random-length words (length drawn from the empirical distribution)</li>
+ *   <li>Fixed-length words</li>
+ * </ul>
+ * 
+ * All generated dictionaries contain only unique words.
+ * 
+ * @author Nikolas Pomiloridis
+ * @author Giorgos Leonidou
+ * @version 1.0
+ */
 public class WordGenerator {
     
     private final static int alphabetSize = 26;
@@ -12,7 +35,14 @@ public class WordGenerator {
     private double[] lengthCDF;
     private double[] charProb;
     private double[] lengthProb;
+    private static final String dir = "dictionaries/";
 
+    /**
+     * Constructs a {@code WordGenerator} that computes probability distributions
+     * based on the contents of the given dictionary file.
+     *
+     * @param filename the path to the dictionary file used for statistical analysis
+     */
     public WordGenerator(String filename){
         this.filename = filename;
 
@@ -20,14 +50,36 @@ public class WordGenerator {
         calculateCDFs();
     }
 
+    /**
+     * Returns the empirical probability distribution of characters
+     * ('a' to 'z') computed from the input dictionary.
+     *
+     * @return an array of size 26 containing character probabilities
+     */
     public double[] getCharProb(){
         return charProb;
     }
 
+    /**
+     * Returns the empirical probability distribution of word lengths computed
+     * from the input dictionary.
+     *
+     * @return an array where index {@code i} contains P(word has length i)
+     */
     public double[] getLengthProb(){
         return lengthProb;
     }
 
+    /**
+     * Computes character and word-length probability distributions from the
+     * input dictionary file. This method is called automatically in the constructor.
+     * <p>
+     * It counts:
+     * <ul>
+     *   <li>How many words have each length</li>
+     *   <li>How frequently each character occurs</li>
+     * </ul>
+     */
     private void calculateProbabilities(){
         int size = maxLength() + 1;
         lengthProb = new double[size];
@@ -78,6 +130,10 @@ public class WordGenerator {
 
     }
 
+    /**
+     * Converts the probability distributions into cumulative distribution
+     * functions (CDFs) for efficient sampling during random generation.
+     */
     private void calculateCDFs(){
         charCDF = new double[alphabetSize];
         lengthCDF = new double[lengthProb.length];
@@ -93,6 +149,13 @@ public class WordGenerator {
         }
     }
 
+    /**
+     * Generates a random word whose length is drawn from the empirical
+     * length distribution, and whose characters follow the empirical
+     * character distribution.
+     *
+     * @return a pseudo-random word
+     */
     public String generateWord(){
         StringBuilder word = new StringBuilder();
 
@@ -102,6 +165,13 @@ public class WordGenerator {
         return word.toString();
     }
 
+    /**
+     * Generates a random word with a specified fixed length, where each character
+     * is sampled independently from the empirical character distribution.
+     *
+     * @param length the desired word length
+     * @return a pseudo-random word of the specified length
+     */
     public String generateWord(int length){
         StringBuilder word = new StringBuilder();
 
@@ -111,9 +181,18 @@ public class WordGenerator {
         return word.toString();
     }
 
+    /**
+     * Generates a dictionary containing the specified number of unique words.
+     * Word lengths follow the empirical distribution.
+     *
+     * <p>The output file is written to {@code dictionaries/random-length_SIZE.txt}
+     * where {@code SIZE} is the number of generated words.
+     *
+     * @param size number of unique words to generate
+     */
     public void generateDictionary(int size){
         try{
-            FileWriter output = new FileWriter("random-length_" + size +".txt");
+            FileWriter output = new FileWriter(dir + "random-length_" + size +".txt");
             HashSet hs = new HashSet(size);
             
             String word = generateWord();
@@ -136,9 +215,19 @@ public class WordGenerator {
         }
     }
 
+    /**
+     * Generates a dictionary of unique words with a fixed length.
+     *
+     * <p>The output file is written to {@code dictionaries/lengthL_SIZE.txt}
+     * where {@code L} is the fixed length.
+     *
+     * @param size the number of unique words to generate
+     * @param wordLength the fixed length of each word
+     */
     public void generateDictionary(int size, int wordLength){
         try{
-            FileWriter output = new FileWriter("length" + wordLength + "_" + size +".txt");
+            
+            FileWriter output = new FileWriter(dir + "length" + wordLength + "_" + size +".txt");
             HashSet hs = new HashSet(size);
 
             String word = generateWord(wordLength);
@@ -161,6 +250,11 @@ public class WordGenerator {
         }
     }
 
+    /**
+     * Generates a pseudo-random character according to the empirical character CDF.
+     *
+     * @return a randomly generated lowercase letter ('a'–'z')
+     */
     private char randomChar(){
         double random = Math.random();
 
@@ -172,6 +266,11 @@ public class WordGenerator {
         return 'z';
     }
 
+    /**
+     * Generates a pseudo-random word length using the empirical length CDF.
+     *
+     * @return an integer representing a random word length
+     */
     private int randomLength(){
         double random = Math.random();
 
@@ -183,6 +282,12 @@ public class WordGenerator {
         return 0;
     }
 
+    /**
+     * Scans the input dictionary and returns the maximum word length found.
+     * This determines the size of the length distribution arrays.
+     *
+     * @return the length of the longest word in the dictionary
+     */
     private int maxLength(){
         int maxLength = 0;
         try{
@@ -204,6 +309,11 @@ public class WordGenerator {
         return maxLength;
     }
 
+    /**
+     * Debug method that prints the CDFs for characters and word lengths.
+     * Intended only for internal inspection.
+     */
+    @SuppressWarnings("unused")
     private void printCDFs(){
         for(int i=0; i< alphabetSize; i++){
             System.out.println((char)('a' + i) + ": " + charCDF[i]);
@@ -215,68 +325,64 @@ public class WordGenerator {
         }
     }
 
+    /**
+     * Main execution method. Generates several dictionary files of both fixed
+     * and random lengths using predefined configurations.
+     *
+     * @param args unused
+     */
     public static void main(String[] args){
-        WordGenerator wg = new WordGenerator("words_alpha.txt");
-        wg.printCDFs();
+        if(args.length < 1){
+            System.err.println("Error no file parameter given!");
+            System.exit(1);
+        }
+        WordGenerator wg = new WordGenerator(args[0]);
 
         // Generate Random length dictionaries
-        /*System.out.println("Generating random length words...\n");
+        System.out.println("Generating random length words...\n");
         wg.generateDictionary(10000);
         wg.generateDictionary(100000);
         wg.generateDictionary(500000);
         wg.generateDictionary(1000000);
-        */
 
-        int[] sizes = { 15000 };
-        //int[] lengths = { 3, 5, 7, 9, 11, 14, 18, 24, 28, 32 };
-        int[] lengths = { 3 };
+        int[] sizes = { 10000, 100000, 500000, 1000000 };
+        int[] lengths = { 5, 7, 9, 11, 14, 18, 24, 28, 32 };
+        int[] sizesFor3 = {5000, 10000, 15000, 17500};
 
-        // for (int L : lengths) {
-        //     System.out.println("Generating words of length " + L + "...\n");
+        System.out.println("Generating words of length " + 3 + "...\n");
+        long maxPossible3 = (long) Math.pow(26, 3);
+        for(int size : sizesFor3){
+            if (maxPossible3 < size) {
+                System.out.println(
+                    "ERROR: Cannot generate " + size +
+                    " unique words of length " + 3 +
+                    " (maximum is " + maxPossible3 + "). Skipping.\n"
+                );
+                continue;
+            }
 
-        //     long maxPossible = (long) Math.pow(26, L);
+            wg.generateDictionary(size, 3);
+        }
 
-        //     for (int size : sizes) {
+        for (int L : lengths) {
+            System.out.println("Generating words of length " + L + "...\n");
 
-        //         // Safety check: impossible request → skip
-        //         if (maxPossible < size) {
-        //             System.out.println(
-        //                 "ERROR: Cannot generate " + size +
-        //                 " unique words of length " + L +
-        //                 " (maximum is " + maxPossible + "). Skipping.\n"
-        //             );
-        //             continue;
-        //         }
+            long maxPossible = (long) Math.pow(26, L);
 
-        //         wg.generateDictionary(size, L);
-        //     }
-        // }
+            for (int size : sizes) {
 
+                // Safety check: impossible request → skip
+                if (maxPossible < size) {
+                    System.out.println(
+                        "ERROR: Cannot generate " + size +
+                        " unique words of length " + L +
+                        " (maximum is " + maxPossible + "). Skipping.\n"
+                    );
+                    continue;
+                }
 
-
-        // for(int i=0; i<100; i++){
-        //     System.out.println(wg.generateWord());
-        // }
-
-        // System.out.println("\n****************************************\n");
-
-        // double[] length =  wg.getLengthProb();
-        // double total = 0;
-        // for(int i=0; i<length.length; i++){
-        //     System.out.println("Length " + i +": " + length[i]);
-        //     total += length[i];
-        // }
-        // System.out.println("Total: " + total);
-
-        // System.out.println("\n****************************************\n");
-
-        // total = 0;
-        // double[] characters =  wg.getCharProb();
-        // for(int i=0; i<characters.length; i++){
-        //     System.out.println((char)('a' + i)  +": " + characters[i]);
-        //     total += characters[i];
-        // }
-        // System.out.println("Total: " + total);
-
+                wg.generateDictionary(size, L);
+            }
+        }
     }
 }

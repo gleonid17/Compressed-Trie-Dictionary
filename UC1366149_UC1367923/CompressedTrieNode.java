@@ -52,13 +52,19 @@ public class CompressedTrieNode {
 		this.importance = 0;
 	}
 
+/**
+ * Computes the total memory usage of this compressed trie node, including:
+ * <ul>
+ *     <li>The object's own JVM header and fields</li>
+ *     <li>The memory used by the edge hashtable</li>
+ *     <li>The memory of all descendant nodes reachable via edges</li>
+ * </ul>
+ *
+ * @return the total memory footprint of this node and all children (in bytes)
+ */
 	public long getSize() {
-		// Object overhead: 16 bytes
-		// Reference to hashtable: 8 bytes
-		// boolean isEndOfWord: 1 byte
-		// int importance: 4 bytes
-		// Padding: 3 bytes (to align to 8-byte boundary)
-		long bytes = 16 + 8 + 1 + 4 + 3; // = 32 bytes per node
+		// Base memory cost
+		long bytes = 16 + 8 + 1 + 4 + 3;
 
 		if (hashtable != null)
 			bytes += hashtable.getSize();
