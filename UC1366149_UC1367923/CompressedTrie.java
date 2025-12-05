@@ -3,12 +3,15 @@ package UC1366149_UC1367923;
 /**
  * A compressed trie data structure for efficient string storage and retrieval.
  * <p>
- * A compressed trie optimizes space by merging chains of nodes with single children
- * into single edges labeled with strings. This implementation supports insertion,
+ * A compressed trie optimizes space by merging chains of nodes with single
+ * children
+ * into single edges labeled with strings. This implementation supports
+ * insertion,
  * search, and prefix-based lookups.
  * </p>
  * <p>
  * Example usage:
+ * 
  * <pre>
  * CompressedTrie trie = new CompressedTrie();
  * trie.insert("car");
@@ -23,10 +26,10 @@ package UC1366149_UC1367923;
  */
 
 public class CompressedTrie {
-    /** The root node of the compressed trie.*/
+	/** The root node of the compressed trie. */
 	CompressedTrieNode root;
 
-    /**
+	/**
 	 * Result object returned by prefix search operations.
 	 * <p>
 	 * Contains the node where the prefix ends and any remaining suffix
@@ -34,28 +37,28 @@ public class CompressedTrie {
 	 * </p>
 	 */
 	public class PrefixResult {
-        /** The node at which the prefix search terminates. */
-        public CompressedTrieNode node;
+		/** The node at which the prefix search terminates. */
+		public CompressedTrieNode node;
 
-        /**
-         * The remaining portion of the edge label after matching the prefix.
-         * Empty string if the prefix exactly matches the edge label.
-         */
-        public String suffix;
+		/**
+		 * The remaining portion of the edge label after matching the prefix.
+		 * Empty string if the prefix exactly matches the edge label.
+		 */
+		public String suffix;
 
-        /**
-         * Constructs a new PrefixResult with the specified node and suffix.
-         * 
-         * @param node the node where the prefix ends
-         * @param suffix the remaining suffix from the edge label
-         */
-        public PrefixResult(CompressedTrieNode node, String suffix) {
-            this.node = node;
-            this.suffix = suffix;
-        }
-    }
+		/**
+		 * Constructs a new PrefixResult with the specified node and suffix.
+		 * 
+		 * @param node   the node where the prefix ends
+		 * @param suffix the remaining suffix from the edge label
+		 */
+		public PrefixResult(CompressedTrieNode node, String suffix) {
+			this.node = node;
+			this.suffix = suffix;
+		}
+	}
 
-    /**
+	/**
 	 * Constructs an empty compressed trie with a root node.
 	 */
 	public CompressedTrie() {
@@ -80,9 +83,13 @@ public class CompressedTrie {
 	}
 
 	public long getSize() {
-		long bytes = 8;	// root reference
-		if(root != null)
+		// Object overhead for CompressedTrie: 16 bytes
+		// Reference to root: 8 bytes
+		long bytes = 16 + 8; // = 24 bytes
+
+		if (root != null)
 			bytes += root.getSize();
+
 		return bytes;
 	}
 
@@ -127,21 +134,22 @@ public class CompressedTrie {
 		splitNode.insertEdge(new Edge(edgeRest, common.getChild()));
 		common.setChild(splitNode);
 		common.setLabel(prefix);
-		//insertHelper(splitNode, wordRest);
-        if (wordRest.length() == 0)
-            splitNode.setIsEndOfWord(true);          // The split node represents a complete word
-        else
-            insertHelper(splitNode, wordRest);
+		// insertHelper(splitNode, wordRest);
+		if (wordRest.length() == 0)
+			splitNode.setIsEndOfWord(true); // The split node represents a complete word
+		else
+			insertHelper(splitNode, wordRest);
 	}
 
 	/**
 	 * Searches for a word in the compressed trie.
 	 * 
 	 * @param word the word to search for
-	 * @return true if the word exists as a complete word in the trie, false otherwise
+	 * @return true if the word exists as a complete word in the trie, false
+	 *         otherwise
 	 */
 	public boolean search(String word) {
-		if(this.root == null)
+		if (this.root == null)
 			return false;
 		return searchHelper(this.root, word);
 	}
@@ -158,18 +166,18 @@ public class CompressedTrie {
 	 * @return true if the word is found and marked as end of word, false otherwise
 	 */
 	private boolean searchHelper(CompressedTrieNode node, String word) {
-		if(word.length() == 0)
+		if (word.length() == 0)
 			return node.isEndOfWord();
 		Edge common = node.getEdgeByFirstChar(word.charAt(0));
 		// If there's not an edge with word.charAt[0]
 		if (common == null)
 			return false;
 		// Find prefix
-		if(!word.startsWith(common.getLabel()))
+		if (!word.startsWith(common.getLabel()))
 			return false;
 		String wordRest = word.substring(common.getLabel().length());
 		return searchHelper(common.getChild(), wordRest);
-	}	
+	}
 
 	/**
 	 * Finds the node in the trie where the given prefix ends.
@@ -181,70 +189,70 @@ public class CompressedTrie {
 	 * @param prefix the prefix string to search for
 	 * @return a PrefixResult containing the node where the prefix ends and any
 	 *         remaining suffix, or null if the prefix is not found
-     * @see PrefixResult
+	 * @see PrefixResult
 	 */
 	public PrefixResult findPrefixNode(String prefix) {
-        if (this.root == null)
-            return null;
-        return findPrefixNodeHelper(this.root, prefix);
-    }
+		if (this.root == null)
+			return null;
+		return findPrefixNodeHelper(this.root, prefix);
+	}
 
-    /**
-     * Recursive helper method for finding the node where a prefix ends.
-     * <p>
-     * Handles three cases:
-     * <ul>
-     * <li>Prefix matches exactly to a node boundary</li>
-     * <li>Prefix ends partway through an edge label</li>
-     * <li>Prefix extends beyond an edge and continues into subtree</li>
-     * </ul>
-     * </p>
-     * 
-     * @param node the current node being examined
-     * @param prefix the remaining portion of the prefix to match
-     * @return a PrefixResult with the matching node and suffix, or null if no match
-     */
-    private PrefixResult findPrefixNodeHelper(CompressedTrieNode node, String prefix) {
-        // Base case
-        if (prefix.length() == 0)
-            return new PrefixResult(node, "");
+	/**
+	 * Recursive helper method for finding the node where a prefix ends.
+	 * <p>
+	 * Handles three cases:
+	 * <ul>
+	 * <li>Prefix matches exactly to a node boundary</li>
+	 * <li>Prefix ends partway through an edge label</li>
+	 * <li>Prefix extends beyond an edge and continues into subtree</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @param node   the current node being examined
+	 * @param prefix the remaining portion of the prefix to match
+	 * @return a PrefixResult with the matching node and suffix, or null if no match
+	 */
+	private PrefixResult findPrefixNodeHelper(CompressedTrieNode node, String prefix) {
+		// Base case
+		if (prefix.length() == 0)
+			return new PrefixResult(node, "");
 
-        Edge edge = node.getEdgeByFirstChar(prefix.charAt(0));
-        if (edge == null) // No words start with first char of prefix
-            return null;
+		Edge edge = node.getEdgeByFirstChar(prefix.charAt(0));
+		if (edge == null) // No words start with first char of prefix
+			return null;
 
-        // Case 1: Prefix is shorter or equal to edge label
-        if (prefix.length() <= edge.getLabel().length()) {
-            // Check if prefix is the same as the first letters of label
-            boolean samePrefix = true;
-            for (int i = 0; i < prefix.length(); i++) {
-                if (prefix.charAt(i) != edge.getLabel().charAt(i)) {
-                    samePrefix = false;
-                    break;
-                }
-            }
+		// Case 1: Prefix is shorter or equal to edge label
+		if (prefix.length() <= edge.getLabel().length()) {
+			// Check if prefix is the same as the first letters of label
+			boolean samePrefix = true;
+			for (int i = 0; i < prefix.length(); i++) {
+				if (prefix.charAt(i) != edge.getLabel().charAt(i)) {
+					samePrefix = false;
+					break;
+				}
+			}
 
-            if (samePrefix) {
-                return new PrefixResult(edge.getChild(), edge.getLabel().substring(prefix.length()));
-            } else
-                return null;
-        } else { // Case 2: prefix is longer
-            boolean samePrefix = true;
-            for (int i = 0; i < edge.getLabel().length(); i++) {
-                if (prefix.charAt(i) != edge.getLabel().charAt(i)) {
-                    samePrefix = false;
-                    break;
-                }
-            }
+			if (samePrefix) {
+				return new PrefixResult(edge.getChild(), edge.getLabel().substring(prefix.length()));
+			} else
+				return null;
+		} else { // Case 2: prefix is longer
+			boolean samePrefix = true;
+			for (int i = 0; i < edge.getLabel().length(); i++) {
+				if (prefix.charAt(i) != edge.getLabel().charAt(i)) {
+					samePrefix = false;
+					break;
+				}
+			}
 
-            if (samePrefix) {
-                String remainingPrefix = prefix.substring(edge.getLabel().length());
-                return findPrefixNodeHelper(edge.getChild(), remainingPrefix);
-            } else
-                return null;
-        }
-    }
-	
+			if (samePrefix) {
+				String remainingPrefix = prefix.substring(edge.getLabel().length());
+				return findPrefixNodeHelper(edge.getChild(), remainingPrefix);
+			} else
+				return null;
+		}
+	}
+
 	/**
 	 * Main method for testing the compressed trie implementation.
 	 * <p>
@@ -254,32 +262,32 @@ public class CompressedTrie {
 	 * 
 	 * @param args command line arguments (not used)
 	 */
-   public static void main(String[] args) {
-        CompressedTrie trie = new CompressedTrie();
-        // Insert words
-        trie.insert("car");
-        trie.insert("ca");
-        trie.insert("cat");
-        trie.insert("dog");
-        trie.insert("door");
-        trie.insert("do");
-        // Words to test
-        String[] tests = {
-                "car",
-                "ca",
-                "cat",
-                "dog",
-                "do",
-                "door",
-                "cart",
-                "c",
-                "doll",
-                "doe"
-        };
-        // Run searches
-        for (String word : tests) {
-            boolean found = trie.search(word);
-            System.out.println("search(\"" + word + "\")\t->\t" + found);
-        }
-    }
+	public static void main(String[] args) {
+		CompressedTrie trie = new CompressedTrie();
+		// Insert words
+		trie.insert("car");
+		trie.insert("ca");
+		trie.insert("cat");
+		trie.insert("dog");
+		trie.insert("door");
+		trie.insert("do");
+		// Words to test
+		String[] tests = {
+				"car",
+				"ca",
+				"cat",
+				"dog",
+				"do",
+				"door",
+				"cart",
+				"c",
+				"doll",
+				"doe"
+		};
+		// Run searches
+		for (String word : tests) {
+			boolean found = trie.search(word);
+			System.out.println("search(\"" + word + "\")\t->\t" + found);
+		}
+	}
 }

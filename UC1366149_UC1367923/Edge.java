@@ -1,10 +1,13 @@
 package UC1366149_UC1367923;
 
 /**
- * Represents an edge in a compressed trie connecting a parent node to a child node.
+ * Represents an edge in a compressed trie connecting a parent node to a child
+ * node.
  * <p>
- * In a compressed trie, edges are labeled with strings rather than single characters,
- * allowing multiple characters to be represented in a single edge. This compression
+ * In a compressed trie, edges are labeled with strings rather than single
+ * characters,
+ * allowing multiple characters to be represented in a single edge. This
+ * compression
  * reduces the space complexity of the trie structure.
  * </p>
  * <p>
@@ -37,7 +40,7 @@ public class Edge {
 	 * Used for hashtable collision resolution and slot management.
 	 */
 	private boolean occupied;
-	
+
 	/**
 	 * Constructs a new Edge with the specified label and child node.
 	 * <p>
@@ -47,7 +50,7 @@ public class Edge {
 	 * @param label the string label for this edge; must not be null
 	 * @param child the child node this edge points to; must not be null
 	 */
-	public Edge (String label, CompressedTrieNode child) {
+	public Edge(String label, CompressedTrieNode child) {
 		this.label = label;
 		this.child = child;
 		this.occupied = false;
@@ -56,25 +59,27 @@ public class Edge {
 	/**
 	 * Gets the label of this edge.
 	 * <p>
-	 * Returns a new String object to prevent external modification of the internal label.
+	 * Returns a new String object to prevent external modification of the internal
+	 * label.
 	 * </p>
 	 * 
 	 * @return a copy of the edge's label string
 	 */
-	public String getLabel(){
+	public String getLabel() {
 		return new String(this.label);
 	}
 
 	/**
 	 * Sets the label of this edge.
 	 * <p>
-	 * This method is typically used when splitting edges during insertion operations
+	 * This method is typically used when splitting edges during insertion
+	 * operations
 	 * to maintain the compressed trie structure.
 	 * </p>
 	 * 
 	 * @param label the new label string for this edge
 	 */
-	public void setLabel(String label){
+	public void setLabel(String label) {
 		this.label = new String(label);
 	}
 
@@ -83,7 +88,7 @@ public class Edge {
 	 * 
 	 * @return the child CompressedTrieNode
 	 */
-	public CompressedTrieNode getChild(){
+	public CompressedTrieNode getChild() {
 		return this.child;
 	}
 
@@ -96,7 +101,7 @@ public class Edge {
 	 * 
 	 * @param child the new child node for this edge
 	 */
-	public void setChild(CompressedTrieNode child){
+	public void setChild(CompressedTrieNode child) {
 		this.child = child;
 	}
 
@@ -109,7 +114,7 @@ public class Edge {
 	 * 
 	 * @param occupied true to mark this edge slot as occupied, false otherwise
 	 */
-	public void setOccupied(boolean occupied){
+	public void setOccupied(boolean occupied) {
 		this.occupied = occupied;
 	}
 
@@ -121,18 +126,37 @@ public class Edge {
 	 * 
 	 * @return true if this edge slot is occupied, false otherwise
 	 */
-	public boolean isOccupied(){
+	public boolean isOccupied() {
 		return occupied;
 	}
 
+	public long getSize() {
+		// Object overhead: 16 bytes
+		// boolean occupied: 1 byte
+		// Padding: 7 bytes
+		// Reference to child: 8 bytes
+		// Reference to label: 8 bytes
+		long bytes = 16 + 1 + 7 + 8 + 8; // = 40 bytes per Edge
 
-	public long getSize(){
-		// Boolean field (1 byte) + child reference (8 bytes) + label reference (8 bytes)
-		long bytes = 1 + 8 + 8;
-		
-		if(label != null)
+		// String object overhead and character data
+		if (label != null) {
+			// String object overhead: 16 bytes
+			// Reference to char array: 8 bytes
+			// int hash: 4 bytes (cached hash code)
+			// Padding: 4 bytes
+			bytes += 16 + 8 + 4 + 4; // = 32 bytes per String
+
+			// char array overhead
+			// Array overhead: 16 bytes
+			// Array length: 4 bytes
+			// Padding: 4 bytes
+			bytes += 16 + 4 + 4; // = 24 bytes
+
+			// Character data: 2 bytes per char
 			bytes += label.length() * 2;
+		}
 
+		// Note: child node size is NOT counted here, it's counted in CompressedTrieNode
 		return bytes;
 	}
 }

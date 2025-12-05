@@ -329,13 +329,28 @@ public class RobinHoodHashtable {
     }
 
     public long getSize() {
-        // Four integer fields (3*4=12) + table reference (8 bytes)
-        long bytes = 3 * 4 + 8;
+        // Object overhead: 16 bytes
+        // Reference to table array: 8 bytes
+        // int maxProbeLength: 4 bytes
+        // int capacity: 4 bytes
+        // int size: 4 bytes
+        long bytes = 16 + 8 + 4 + 4 + 4; // = 36 bytes
 
-        for (int i = 0; i < table.length; i++) {
-            bytes += 8; // Each array slot holds a reference (8 bytes)
-            if (table[i] != null)
-                bytes += table[i].getSize();
+        // Array overhead for Edge[]
+        if (table != null) {
+            // Array object overhead: 16 bytes
+            // Array length field: 4 bytes
+            // Padding: 4 bytes
+            bytes += 16 + 4 + 4; // = 24 bytes
+
+            // Each array slot (reference): 8 bytes
+            bytes += table.length * 8;
+
+            // Add size of each Edge object
+            for (int i = 0; i < table.length; i++) {
+                if (table[i] != null)
+                    bytes += table[i].getSize();
+            }
         }
 
         return bytes;

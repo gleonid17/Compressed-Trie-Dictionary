@@ -6,7 +6,8 @@ package UC1366149_UC1367923;
  * Each node stores:
  * <ul>
  * <li>A hashtable of outgoing edges to child nodes</li>
- * <li>A flag indicating whether this node represents the end of a complete word</li>
+ * <li>A flag indicating whether this node represents the end of a complete
+ * word</li>
  * <li>An importance value for ranking or prioritization purposes</li>
  * </ul>
  * </p>
@@ -27,7 +28,8 @@ public class CompressedTrieNode {
 	 */
 	private RobinHoodHashtable hashtable;
 	/**
-	 * Flag indicating whether this node marks the end of a complete word in the trie.
+	 * Flag indicating whether this node marks the end of a complete word in the
+	 * trie.
 	 * When true, the path from root to this node forms a valid word.
 	 */
 	private boolean isEndOfWord;
@@ -36,7 +38,7 @@ public class CompressedTrieNode {
 	 * Can be used for ranking suggestions in autocomplete or other applications.
 	 */
 	private int importance;
-	
+
 	/**
 	 * Constructs a new CompressedTrieNode with default values.
 	 * <p>
@@ -50,20 +52,30 @@ public class CompressedTrieNode {
 		this.importance = 0;
 	}
 
-	public long getSize(){
-		long bytes = 1 + 4 + 8;
-		bytes += hashtable.getSize();
+	public long getSize() {
+		// Object overhead: 16 bytes
+		// Reference to hashtable: 8 bytes
+		// boolean isEndOfWord: 1 byte
+		// int importance: 4 bytes
+		// Padding: 3 bytes (to align to 8-byte boundary)
+		long bytes = 16 + 8 + 1 + 4 + 3; // = 32 bytes per node
 
-		SinglyLinkedList.Node currentEdge = hashtable.getAllEdges().head;
-		while(currentEdge != null){
-			if(currentEdge.edge.getChild() != null)
-				bytes += currentEdge.edge.getChild().getSize();
-			currentEdge = currentEdge.next;
+		if (hashtable != null)
+			bytes += hashtable.getSize();
+
+		// Recursively add child nodes (accessed through edges)
+		if (hashtable != null) {
+			SinglyLinkedList.Node currentEdge = hashtable.getAllEdges().head;
+			while (currentEdge != null) {
+				if (currentEdge.edge != null && currentEdge.edge.getChild() != null)
+					bytes += currentEdge.edge.getChild().getSize();
+				currentEdge = currentEdge.next;
+			}
 		}
 
 		return bytes;
 	}
-	
+
 	/**
 	 * Inserts an edge from this node to a child node.
 	 * <p>
@@ -76,7 +88,7 @@ public class CompressedTrieNode {
 	public void insertEdge(Edge edge) {
 		this.hashtable.insert(edge);
 	}
-	
+
 	/**
 	 * Retrieves an edge from this node by the first character of its label.
 	 * <p>
@@ -84,17 +96,19 @@ public class CompressedTrieNode {
 	 * </p>
 	 * 
 	 * @param c the first character of the edge label to search for
-	 * @return the Edge starting with the specified character, or null if no such edge exists
+	 * @return the Edge starting with the specified character, or null if no such
+	 *         edge exists
 	 */
 	public Edge getEdgeByFirstChar(char c) {
 		return this.hashtable.search(c);
 	}
-	
+
 	/**
 	 * Retrieves all edges from this node.
 	 * <p>
 	 * Returns a list containing all edges stored in this node's hashtable,
-	 * useful for traversing all children or performing operations on the entire subtree.
+	 * useful for traversing all children or performing operations on the entire
+	 * subtree.
 	 * </p>
 	 * 
 	 * @return a SinglyLinkedList containing all edges from this node
@@ -102,22 +116,23 @@ public class CompressedTrieNode {
 	public SinglyLinkedList getAllEdges() {
 		return this.hashtable.getAllEdges();
 	}
-	
+
 	/**
 	 * Checks whether this node represents the end of a complete word.
 	 * 
 	 * @return true if this node marks the end of a word, false otherwise
 	 */
-	public boolean isEndOfWord(){
+	public boolean isEndOfWord() {
 		return isEndOfWord;
 	}
 
 	/**
 	 * Sets whether this node represents the end of a complete word.
 	 * 
-	 * @param isEndOfWord true to mark this node as the end of a word, false otherwise
+	 * @param isEndOfWord true to mark this node as the end of a word, false
+	 *                    otherwise
 	 */
-	public void setIsEndOfWord(boolean isEndOfWord){
+	public void setIsEndOfWord(boolean isEndOfWord) {
 		this.isEndOfWord = isEndOfWord;
 	}
 
@@ -130,7 +145,7 @@ public class CompressedTrieNode {
 	 * 
 	 * @return the current importance value
 	 */
-	public int getImportance(){
+	public int getImportance() {
 		return importance;
 	}
 
@@ -139,7 +154,7 @@ public class CompressedTrieNode {
 	 * 
 	 * @param importance the new importance value to assign
 	 */
-	public void setImportance(int importance){
+	public void setImportance(int importance) {
 		this.importance = importance;
 	}
 
@@ -150,7 +165,7 @@ public class CompressedTrieNode {
 	 * allowing the trie to adapt to user behavior over time.
 	 * </p>
 	 */
-	public void incrementImportance(){
+	public void incrementImportance() {
 		this.importance++;
 	}
 }

@@ -204,8 +204,20 @@ public class WordGenerator {
         return maxLength;
     }
 
+    private void printCDFs(){
+        for(int i=0; i< alphabetSize; i++){
+            System.out.println((char)('a' + i) + ": " + charCDF[i]);
+        }
+
+        System.out.println();
+        for(int i=0; i< lengthCDF.length; i++){
+            System.out.println("Length " + i + ": " + lengthCDF[i]);
+        }
+    }
+
     public static void main(String[] args){
         WordGenerator wg = new WordGenerator("words_alpha.txt");
+        wg.printCDFs();
 
         // Generate Random length dictionaries
         /*System.out.println("Generating random length words...\n");
@@ -219,26 +231,26 @@ public class WordGenerator {
         //int[] lengths = { 3, 5, 7, 9, 11, 14, 18, 24, 28, 32 };
         int[] lengths = { 3 };
 
-        for (int L : lengths) {
-            System.out.println("Generating words of length " + L + "...\n");
+        // for (int L : lengths) {
+        //     System.out.println("Generating words of length " + L + "...\n");
 
-            long maxPossible = (long) Math.pow(26, L);
+        //     long maxPossible = (long) Math.pow(26, L);
 
-            for (int size : sizes) {
+        //     for (int size : sizes) {
 
-                // Safety check: impossible request → skip
-                if (maxPossible < size) {
-                    System.out.println(
-                        "ERROR: Cannot generate " + size +
-                        " unique words of length " + L +
-                        " (maximum is " + maxPossible + "). Skipping.\n"
-                    );
-                    continue;
-                }
+        //         // Safety check: impossible request → skip
+        //         if (maxPossible < size) {
+        //             System.out.println(
+        //                 "ERROR: Cannot generate " + size +
+        //                 " unique words of length " + L +
+        //                 " (maximum is " + maxPossible + "). Skipping.\n"
+        //             );
+        //             continue;
+        //         }
 
-                wg.generateDictionary(size, L);
-            }
-        }
+        //         wg.generateDictionary(size, L);
+        //     }
+        // }
 
 
 
