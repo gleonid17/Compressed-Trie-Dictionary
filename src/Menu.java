@@ -21,8 +21,8 @@ import java.util.Scanner;
  * <p>
  * Usage: 
  * <ol>
- *  <li> Compilation: {@code javac UC1366149_UC1367923/*.java} </li>
- *  <li> Execution: {@code java UC1366149_UC1367923.Menu dictionary.txt textFile.txt}</li>
+ *  <li> Compilation: {@code javac src/*.java} </li>
+ *  <li> Execution: {@code java -cp src Menu dictionary.txt textFile.txt}</li>
  * </p>
  * 
  * @author George Leonidou
@@ -144,8 +144,6 @@ public class Menu {
                     prefix = readPrefixSafely(in);
                     float average = analyzer.getAverageFrequencyOfPrefix(prefix);
                     System.out.println("The average frequency of words with prefix " + prefix + " is: " + average);
-
-                    System.out.println("Give the prefix: ");
                     correctInputRead = false;
                     break;
 

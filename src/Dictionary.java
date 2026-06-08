@@ -148,7 +148,13 @@ public class Dictionary {
         }
         if (first > last || first >= word.length())
             return "";
-        return word.substring(first, last + 1);
+        String cleaned = word.substring(first, last + 1);
+        StringBuilder onlyLetters = new StringBuilder();
+        for (int i = 0; i < cleaned.length(); i++) {
+            if (cleaned.charAt(i) >= 'a' && cleaned.charAt(i) <= 'z')
+                onlyLetters.append(cleaned.charAt(i));
+        }
+        return onlyLetters.toString();
     }
 
     /**
