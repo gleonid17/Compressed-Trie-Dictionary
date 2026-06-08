@@ -1,0 +1,37 @@
+# Java compiled files
+*.class
+
+# Build/output folders
+out/
+bin/
+target/
+
+# Generated documentation
+docs/
+javadoc/
+html/
+
+# Large generated dictionaries
+dictionaries/*.txt
+
+# Keep optional small sample files if you place them there
+!dictionaries/sample-dictionary.txt
+!dictionaries/sample-corpus.txt
+
+# Experiment outputs
+Memory-Tests/
+*.ods
+*.odt
+*.csv
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*~
