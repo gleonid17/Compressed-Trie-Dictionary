@@ -132,4 +132,6 @@ Nikolas Pomiloridis
 
 ## License
 
-MIT — see [LICENSE](https://claude.ai/chat/LICENSE) for details.
+
+# License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
